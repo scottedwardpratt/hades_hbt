@@ -14,6 +14,7 @@ class Chades_hbt_resinfo;
 
 class Chades_hades_hbt_master{
 public:
+	Chades_hhbt_master();
 	CparameterMap *parmap;
 	void ReadOSCAR();
 	CWaveFunction *wf;
@@ -26,11 +27,14 @@ public:
 
 class Chades_hbt_cell_list{
 public:
+	Chades_hbt_cell_list();
 	int NX,NY,NZ;
 	double DPX,DPY,DPZ;
-	vector<vector<vector<Chades_hbt_cell *>>>;
+	vector<vector<vector<Chades_hbt_cell *>>> *lista;
+	vector<vector<vector<Chades_hbt_cell *>>> *listb;
 	void FindCell(Chades_hbt_part *part &*cell);
-	void Add2List(Chades_hbt_part *parta,Chades_hbt_part *partb); // Calulates relative momentum, phi^2, etc, then increments CFs accordingly.
+	void Add2List(Chades_hbt_part *parta);
+	void IncrementCFs(Chades_hbt_part *parta,Chades_hbt_*partb); // Calulates relative momentum, phi^2, etc, then increments CFs accordingly.
 };
 
 class Chades_hbt_cell{
@@ -40,6 +44,7 @@ public:
 
 class Chades_hbt_resinfo{
 public:
+	Chades_hbt_resinfo();
 	int pida,pidb;
 	double massa,massb;
 };
@@ -47,11 +52,6 @@ public:
 class Chades_hbt_acceptance{
 public:
 	void acceptance(Chades_hbt_resinfo *resinfo,Chades_hbt_part,bool &accept,double &efficiency);
-};
-
-class Chades_hbt_part{
-	long long int IPART;  
-	double p[4],x[4];
 };
 
 class Chades_hbt_CFs{
