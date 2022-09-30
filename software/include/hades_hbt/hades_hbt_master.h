@@ -38,6 +38,7 @@ public:
 
 class Chades_hbt_cell{
 public:
+	Chades_hbt_cell();
 	vector<Chades_part *> partlist;
 	vector<vector<vector<Chades_hbt_cell>>> *neighbor;
 };
@@ -51,7 +52,7 @@ public:
 
 class Chades_hbt_acceptance{
 public:
-	void acceptance(Chades_hbt_resinfo *resinfo,Chades_hbt_part,bool &accept,double &efficiency);
+	void acceptance(int pid,Chades_hbt_part,bool &accept,double &efficiency);
 };
 
 class Chades_hbt_CFs{
@@ -59,3 +60,8 @@ class Chades_hbt_CFs{
 	double DQINV;
 	vector<double> C_of_qinv;
 };
+
+class Chades_part{
+	double x[4];
+	double p[4];
+}
