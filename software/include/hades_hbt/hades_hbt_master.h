@@ -39,7 +39,8 @@ public:
 class Chades_hbt_cell{
 public:
 	Chades_hbt_cell();
-	vector<Chades_part *> partlist;
+	vector<Chades_part *> partlista;
+	vector<Chades_part *> partlistb;
 	vector<vector<vector<Chades_hbt_cell>>> *neighbor;
 };
 
