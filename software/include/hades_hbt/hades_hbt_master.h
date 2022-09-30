@@ -30,8 +30,7 @@ public:
 	Chades_hbt_cell_list();
 	int NX,NY,NZ;
 	double DPX,DPY,DPZ;
-	vector<vector<vector<Chades_hbt_cell *>>> *lista;
-	vector<vector<vector<Chades_hbt_cell *>>> *listb;
+	vector<vector<vector<Chades_hbt_cell *>>> *cell;
 	void FindCell(Chades_hbt_part *part &*cell);
 	void Add2List(Chades_hbt_part *parta);
 	void IncrementCFs(Chades_hbt_part *parta,Chades_hbt_*partb); // Calulates relative momentum, phi^2, etc, then increments CFs accordingly.
@@ -40,6 +39,7 @@ public:
 class Chades_hbt_cell{
 public:
 	vector<Chades_part *> partlist;
+	vector<vector<vector<Chades_hbt_cell>>> *neighbor;
 };
 
 class Chades_hbt_resinfo{
