@@ -21,7 +21,7 @@ public:
 	double GetCorrelationWeight(Chades_hbt_part *parta,Chades_hbt_part *partb);
 	void Acceptance(int pid,Chades_hbt_part *part);
 	void IncrementCFs(Chades_hbt_part *parta,Chades_hbt_part *partb,double weight,double  efficiency);
-	Chades_hbt_cell_list *lista,*listb;
+	Chades_hbt_cell_list *cell_list;
 	Chades_hbt_CFs *cfs;
 };
 
