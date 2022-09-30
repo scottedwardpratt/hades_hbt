@@ -53,7 +53,7 @@ public:
 
 class Chades_hbt_acceptance{
 public:
-	void acceptance(int pid,Chades_hbt_part,bool &accept,double &efficiency);
+	void acceptance(int pid,Chades_hbt_part *part,bool &accept,double &efficiency);
 };
 
 class Chades_hbt_CFs{
