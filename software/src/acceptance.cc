@@ -22,5 +22,8 @@ void acceptance(int pid, Chades_hbt_part *part, bool &accept, double &efficiency
   //rapidity:
   double rapidity = 0.5 * log((part.p[0]+part.p[3])/(part.p[0]+part.p[3]));
   if(rapidity > 2.1) accept = false;
-
+    
+    
+//// === Efficiency === ////
+    efficiency=1.0;
 }
