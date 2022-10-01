@@ -15,6 +15,7 @@ class Chades_hbt_resinfo;
 class Chades_hades_hbt_master{
 public:
 	Chades_hhbt_master();
+	Chades_hhbt_master(CparameterMap *parmap);
 	CparameterMap *parmap;
 	void ReadOSCAR();
 	CWaveFunction *wf;
