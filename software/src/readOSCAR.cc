@@ -6,37 +6,60 @@
 
 using namespace std;
 
-void Chades_hbt::ReadOSCAR(int nr_ev = 1, string directory, int firstFile, int lastFile, varctor<Chades_part*> partList_a, varctor<Chades_part*> partList_b){
-
+void Chades_hbt_master::ReadOSCAR(){
+	int nr_ev=1;
+	int firstFile=parmap.getI("FIRST_OSCARFILE",0);
+	int lastFile=parmap.getI("LAST_OSCARFILE",10);
+	Chades_hbt_cell *cell;
+	Chades_hbt_part *tmp_particle;
+	string directory=parmap.getS("OSCAR_DIRNAME","oscar_crap");
+	
     // opening the files from first -> last:
     ifstream f_in;
 
     string dust, line; // dummy variable
-    double t, x, y, z, mass, p0, px, py, pz, pdg, id, charge, bim;
+    double t, x, y, z, mass, p0, px, py, pz, pdg, pid, charge, bim;
     int nrParticlesInEvent;
     int event = 0;
-    for(int iFile = firstFile; iFile <= last; FileiFile++){
-      string infile_name = directory + to_string(iFile); //create the name of the files to be read
+    for(int iFile = firstFile; iFile <= lastFile; iFile++){
+      string infile_name = directory +"/"+ to_string(iFile); //create the name of the files to be read
       // open input file
       f_in.open( infile_name );
-      if( f_in.fail() ) error_message( "cannot open input file" );
+      if( f_in.fail() )
+			CLog::Fatal( "cannot open input file" );
       //getting rid of some lines
       for(int i = 0; i < 3; i++) getline( f_in, line );
-        while (!iFile.eof()){
-          event == nr_ev;
+        while (!f_in.eof()){
+          event = nr_ev;
           for(int i = 0; i < 4; i++) f_in >> dust;
           f_in >> nrParticlesInEvent;
           for(int i = 0; i < nrParticlesInEvent; i++){//reading particles in event loop
-            f_in >> t >> x >> y >> z >> mass >> p0 >> px >> py >> pz >> pdg >> id >> charge;
-            Chades_part *tmp_particle(p0, px, py, pz, t, x, y, z);
+            f_in >> t >> x >> y >> z >> mass >> p0 >> px >> py >> pz >> pdg >> pid >> charge;
+				
             bool accept; double eff;
-            if(pid == parmap.PIDA){
-              acceptance(pdg, tmp_particle, accept, eff);
-              if(accept)partList_a.push_back(tmp_particle);
+            if(pid == PIDA){
+              Acceptance(pid,tmp_particle, accept, eff);
+				  if(accept){
+					  cell_list->FindCell(pid,tmp_particle,cell);
+					  tmp_particle=new Chades_hbt_part;
+					  tmp_particle->p[0]=p0;
+					  tmp_particle->p[1]=px; tmp_particle->p[2]=py; tmp_particle->p[3]=pz;
+					  tmp_particle->x[0]=t;
+					  tmp_particle->x[1]=x; tmp_particle->x[2]=y; tmp_particle->x[3]=z;
+					  cell->partlist_a.push_back(tmp_particle);
+				  }
             }
-            if(pid == parmap.PIDB){
-              acceptance(pdg, tmp_particle, accept, eff);
-              if(accept)partList_b.push_back(tmp_particle);
+            else if(pid == PIDB ){
+              Acceptance(pid, tmp_particle, accept, eff);
+              if(accept){
+					  cell_list->FindCell(pid,tmp_particle,cell);
+					  tmp_particle=new Chades_hbt_part;
+					  tmp_particle->p[0]=p0;
+					  tmp_particle->p[1]=px; tmp_particle->p[2]=py; tmp_particle->p[3]=pz;
+					  tmp_particle->x[0]=t;
+					  tmp_particle->x[1]=x; tmp_particle->x[2]=y; tmp_particle->x[3]=z;
+					  cell->partlist_b.push_back(tmp_particle);
+				  }
             }
           } // end particles loop
           for(int i = 0; i < 6; i++) f_in >> dust;
