@@ -1,4 +1,4 @@
-#include "hades_hbt_master.h"
+#include "hades_hbt/hades_hbt.h"
 
 #include <iostream>
 #include <fstream>
@@ -6,7 +6,7 @@
 
 using namespace std;
 
-void ReadOSCAR(int nr_ev = 1, string directory, int firstFile, int lastFile, varctor<Chades_part*> partList_a, varctor<Chades_part*> partList_b){
+void Chades_hbt::ReadOSCAR(int nr_ev = 1, string directory, int firstFile, int lastFile, varctor<Chades_part*> partList_a, varctor<Chades_part*> partList_b){
 
     // opening the files from first -> last:
     ifstream f_in;

@@ -1,11 +1,13 @@
-#include "hades_hbt.h"
+#include "hades_hbt/hades_hbt.h"
 
-Chades_hades_hbt_master::Chades_hades_hbt_master(CparamterMap *parmap){
+Chades_hbt_master::Chades_hbt_master(CparameterMap *parmapset){
+	parmap=parmapset;	
 	string message;
-	PIDA=parmap->GetI("PIDA",211);
-	PIDB=parmap->GetI("PIDB",211);
+	PIDA=parmap->getI("PIDA",211);
+	PIDB=parmap->getI("PIDB",211);
 	
-	log.init(parmap.getS("LOG_FILENAME","log.txt"));
+	string filename=parmap->getS("LOG_FILENAME","log.txt");
+	log.init(parmap->getS(filename));
 	log.interactive=false;
 	
 	if((PIDA==2212 && PIDB==2212) || (PIDA==-2212 && PIDB==-2212)){
@@ -21,5 +23,9 @@ Chades_hades_hbt_master::Chades_hades_hbt_master(CparamterMap *parmap){
 	cell_list=new Chades_hbt_cell_list(parmap);
 	
 	cfs=new Chades_hbt_CFs(parmap);
+	
+	cell_list::log=&log;
+	Chades_hbt_acceptance::log=&log;
+	Chades_hbt_cell::log=&log;
 	
 }

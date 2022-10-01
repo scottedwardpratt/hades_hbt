@@ -2,14 +2,12 @@
 
 using namespace std;
 
-Chades_hbt_cell_list::Chades_hbt_cell_list(){
+Chades_hbt_cell_list::Chades_hbt_cell_list(CparameterMap &*parmap){
 	int ix,iy,iz;
 	int inx,iny,inz;
-	NX=parmap->GetI("NX",10);
-	NY=parmap->GetI("NY",10);
-	NZ=parmap->GetI("NZ",10);
-	lista.resize(NX);
-	listb.resize(NX);
+	NX=parmap->getI("NX",10);
+	NY=parmap->getI("NY",10);
+	NZ=parmap->getI("NZ",10);
 	for(ix=0;ix<NX;ix++){
 		cell_list[ix].resize[NY];
 		for(iy=0;iy<NY;iy++){
@@ -40,7 +38,7 @@ Chades_hbt_cell_list::Chades_hbt_cell_list(){
 	}
 }
 
-void Chades_hbt_cell_list::FindCell(int pid,Chades_hbt_part *part,Chades_hbt_cell &*cell){
+void Chades_hbt_cell_list::FindCell(int pid,Chades_hbt_part *part,Chades_hbt_cell &cell){
 	double px=part->p[1],py=part->p[2],pz=part->p[3];
 	double E=part->p[0];
 	double mass=sqrt(E*E-px*px-py*py-pz*pz);
