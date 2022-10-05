@@ -1,35 +1,67 @@
 #include "hades_hbt/hades_hbt.h"
+Chades_hbt_master *Chades_hbt_cell_list::master=NULL;
 
 using namespace std;
 
 Chades_hbt_cell_list::Chades_hbt_cell_list(CparameterMap *parmap){
 	int ix,iy,iz;
 	int inx,iny,inz;
-	NPX=parmap->getI("NPX",10);
-	NPY=parmap->getI("NPY",10);
-	NPZ=parmap->getI("NPZ",10);
-	cell.resize(NPX);
-	for(ix=0;ix<NPX;ix++){
-		cell[ix].resize(NPY);
-		for(iy=0;iy<NPY;iy++){
-			cell[ix][iy].resize(NPZ);
-			for(iz=0;iz<NPZ;iz++){
+	//QMAX=parmap->getD("QMAX",50.0);
+	QMAX=parmap->getD("NQMAX",40)*parmap->getD("DELQ",2.0);
+	double ma=master->wf->m1;
+	double mb=master->wf->m2;
+	double mu=ma*mb/(ma+mb);
+	DRAPX=DRAPY=DRAPZ=QMAX/mu;
+	double PXMAXa=parmap->getD("PXMAXA",1000.0);
+	double PYMAXa=parmap->getD("PYMAXA",1000.0);
+	double PZMAXa=parmap->getD("PZMAXA",2000.0);
+	double PXMAXb=parmap->getD("PXMAXB",1000.0);
+	double PYMAXb=parmap->getD("PYMAXB",1000.0);
+	double PZMAXb=parmap->getD("PZMAXB",2000.0);
+	if(PXMAXa/ma > PXMAXb/mb)
+		rapxmax=asinh(PXMAXb/mb);
+	else
+		rapxmax=asinh(PXMAXa/ma);
+	
+	if(PYMAXa/ma > PYMAXb/mb)
+		rapymax=asinh(PYMAXb/mb);
+	else
+		rapymax=asinh(PYMAXa/ma);
+	if(PZMAXa/ma > PZMAXb/mb)
+		rapzmax=asinh(PZMAXb/mb);
+	else
+		rapzmax=asinh(PZMAXa/ma);
+
+	NRAPX=2+2*floorl(rapxmax/DRAPX);
+	NRAPY=2+2*floorl(rapymax/DRAPY);
+	NRAPZ=2+2*floorl(rapzmax/DRAPZ);
+	printf("NRAPX=%d, NRAPY=%d, NRAPZ=%d\n",NRAPX,NRAPY,NRAPZ);
+	
+	//DPX=parmap->getI("DPX",100);
+	//DPY=parmap->getI("DPY",100);
+	//DPZ=parmap->getI("DPZ",100);
+	cell.resize(NRAPX);
+	for(ix=0;ix<NRAPX;ix++){
+		cell[ix].resize(NRAPY);
+		for(iy=0;iy<NRAPY;iy++){
+			cell[ix][iy].resize(NRAPZ);
+			for(iz=0;iz<NRAPZ;iz++){
 				cell[ix][iy][iz]=new Chades_hbt_cell();
 			}
 		}
 	}
-	for(ix=0;ix<NPX;ix++){
-		for(iy=0;iy<NPY;iy++){
-			for(iz=0;iz<NPZ;iz++){
+	for(ix=0;ix<NRAPX;ix++){
+		for(iy=0;iy<NRAPY;iy++){
+			for(iz=0;iz<NRAPZ;iz++){
 				cell[ix][iy][iz]->neighbor.resize(3);
 				for(inx=0;inx<3;inx++){
 					cell[ix][iy][iz]->neighbor[inx].resize(3);
 					for(iny=0;iny<3;iny++){
 						cell[ix][iy][iz]->neighbor[inx][iny].resize(3);
 						for(inz=0;inz<3;inz++){
-							if((ix+inx-1<NPX && ix+inx-1>=0) 
-								&&(iy+iny-1<NPY && iy+iny-1>=0)
-									&&(iz+inz-1<NPZ && iz+inz-1>=0)){
+							if((ix+inx<NRAPX && ix+inx-1>=0) 
+								&&(iy+iny<NRAPY && iy+iny-1>=0)
+									&&(iz+inz<NRAPZ && iz+inz-1>=0)){
 										cell[ix][iy][iz]->neighbor[inx][iny][inz]=cell[ix+inx-1][iy+iny-1][iz+inz-1];
 							}
 						}
@@ -44,19 +76,23 @@ void Chades_hbt_cell_list::FindCell(int pid,Chades_hbt_part *part,Chades_hbt_cel
 	double px=part->p[1],py=part->p[2],pz=part->p[3];
 	double E=part->p[0];
 	double mass=sqrt(E*E-px*px-py*py-pz*pz);
-	double dpx=px-NPX*DPX*0.5;
-	int ipx=lrint(floor(dpx/DPX));
+	double rapx=asinh(px/sqrt(mass*mass+py*py+pz*pz));
+	double rapy=asinh(py/sqrt(mass*mass+px*px+pz*pz));
+	double rapz=asinh(pz/sqrt(mass*mass+py*py+px*px));
 	cellptr=NULL;
-	if(ipx>=0 && ipx<NPX){
-		double dpy=py-NPY*DPY*0.5;
-		int ipy=lrint(floor(dpy/DPY));
-		if(ipy>=0 && ipy<NPY){
-			double dpz=pz-NPZ*DPZ*0.5;
-			int ipz=lrint(floor(dpz/DPZ));
-			if(ipz>=0 && ipz<NPZ){
-				cellptr=cell[ipx][ipy][ipz];
+	if(fabs(rapx)<rapxmax && fabs(rapy)<rapymax && fabs(rapz)<rapzmax){
+		double drapx=rapx+NRAPX*DRAPX*0.5;
+		int irapx=lrint(floor(drapx/DRAPX));
+		if(irapx>=0 && irapx<NRAPX){
+			double drapy=rapy+NRAPY*DRAPY*0.5;
+			int irapy=lrint(floor(drapy/DRAPY));
+			if(irapy>=0 && irapy<NRAPY){
+				double drapz=rapz+NRAPZ*DRAPZ*0.5;
+				int irapz=lrint(floor(drapz/DRAPZ));
+				if(irapz>=0 && irapz<NRAPZ){
+					cellptr=cell[irapx][irapy][irapz];
+				}
 			}
 		}
-	}
-	
+	}	
 }
