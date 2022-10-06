@@ -8,7 +8,6 @@ Chades_hbt_cell_list::Chades_hbt_cell_list(CparameterMap *parmap){
 	int inx,iny,inz;
 	//QMAX=parmap->getD("QMAX",50.0);
 	QMAX=parmap->getD("NQMAX",40)*parmap->getD("DQINV",2.0);
-	printf("QMAX=%g\n",QMAX);
 	double ma=master->wf->m1;
 	double mb=master->wf->m2;
 	double mu=ma*mb/(ma+mb);
@@ -36,7 +35,7 @@ Chades_hbt_cell_list::Chades_hbt_cell_list(CparameterMap *parmap){
 	NRAPX=2+2*floorl(rapxmax/DRAPX);
 	NRAPY=2+2*floorl(rapymax/DRAPY);
 	NRAPZ=2+2*floorl(rapzmax/DRAPZ);
-	printf("NRAPX=%d, NRAPY=%d, NRAPZ=%d\n",NRAPX,NRAPY,NRAPZ);
+	CLog::Info("NRAPX="+str(NRAPX)+", NRAPY="+str(NRAPY)+", NRAPZ="+str(NRAPZ)+"\n");
 	
 	//DPX=parmap->getI("DPX",100);
 	//DPY=parmap->getI("DPY",100);

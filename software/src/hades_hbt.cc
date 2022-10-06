@@ -32,12 +32,13 @@ Chades_hbt_master::Chades_hbt_master(string parsfilename){
 }
 
 void Chades_hbt_master::CalcCFs(){
-	int icx,icy,icz,jcx,jcy,jcz,inx,iny,inz,ia,ib,na,nb;
-	int inxmin=1,inymin,inzmin,ibmin;
+	int icx,icy,icz,inx,iny,inz,ia,ib,na,nb;
+	int inxmin,inymin,inzmin,ibmin;
 	int natot=0;
 	nincrement=nsuccess=0;
-	if(PIDA!=PIDB)
-		inxmin=0;
+	inxmin=0;
+	if(PIDA==PIDB)
+		inxmin=1;
 	Chades_hbt_cell *cella,*cellb;
 	Chades_hbt_part *parta,*partb;
 	for(icx=0;icx<cell_list->NRAPX;icx++){
@@ -57,14 +58,12 @@ void Chades_hbt_master::CalcCFs(){
 							if(PIDA==PIDB && inx==1 && iny==1)
 								inzmin=1;
 							for(inz=inzmin;inz<3;inz++){
-								if(cella->neighbor[inx][iny][inz]!=NULL){
-									jcx=icx+inx;
-									jcy=icy+iny;
-									jcz=icz+inz;
-									cellb=cell_list->cell[jcx][jcy][jcz];
+								cellb=cella->neighbor[inx][iny][inz];
+								if(cellb!=NULL){
 									ibmin=0;
-									if(PIDA==PIDB && inx==1 && iny==1 && inz==1)
+									if(PIDA==PIDB && inx==1 && iny==1 && inz==1){
 										ibmin=ia+1;
+									}
 									if(PIDA==PIDB){
 										nb=cellb->partlist_a.size();
 									}
@@ -86,7 +85,7 @@ void Chades_hbt_master::CalcCFs(){
 			}
 		}
 	}
-	printf("nincrement=%d, nsuccess=%d, success rate=%g,%g\n",
+	CLog::Info("nincrement=%d, nsuccess=%d, success rate=%g,%g\n",
 	nincrement,nsuccess,
 	2.0*double(nincrement)/(double(natot)*double(natot-1)),
 	double(nsuccess)/double(nincrement));

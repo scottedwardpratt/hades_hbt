@@ -25,7 +25,7 @@ void Chades_hbt_master::ReadOSCAR(){
 	for(int iFile = firstFile; iFile <= lastFile; iFile++){
 		string infile_name = directory +"/particle_lists_"+ to_string(iFile)+".oscar"; //create the name of the files to be read
 		// open input file
-		printf("check, READING %s\n",infile_name.c_str());
+		CLOG::Info("Reading "+infile_name.c_str()+"\n");
 		f_in.open( infile_name );
 		if( f_in.fail() )
 			CLog::Fatal( "cannot open input file" );

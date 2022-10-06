@@ -52,7 +52,7 @@ public:
 	vector<Chades_hbt_part *> partlist_a;
 	vector<Chades_hbt_part *> partlist_b;
 	vector<vector<vector<Chades_hbt_cell *>>> neighbor;
-	vector<vector<int>> nlist[2][2][2];
+	//vector<vector<int>> nlist[2][2][2];
 };
 
 class Chades_hbt_resinfo{
