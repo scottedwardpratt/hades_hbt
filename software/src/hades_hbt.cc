@@ -1,7 +1,7 @@
 #include "hades_hbt/hades_hbt.h"
 
 Chades_hbt_master::Chades_hbt_master(string parsfilename){
-	printf("parsfilename=%s\n",parsfilename.c_str());
+	CLog::Info("parsfilename="+parsfilename+"\n");
 	parmap.ReadParsFromFile(parsfilename);	
 	string message;
 	PIDA=parmap.getI("PIDA",211);
@@ -85,36 +85,15 @@ void Chades_hbt_master::CalcCFs(){
 			}
 		}
 	}
-	CLog::Info("nincrement=%d, nsuccess=%d, success rate=%g,%g\n",
-	nincrement,nsuccess,
-	2.0*double(nincrement)/(double(natot)*double(natot-1)),
-	double(nsuccess)/double(nincrement));
+	CLog::Info("nincrement="+to_string(nincrement)+", nincrement/npairs_tot="
+		+to_string(2.0*double(nincrement)/(double(natot)*double(natot-1)))+"\n");//, nwf/nincrement="+to_string(double(nsuccess)/double(nincrement));
+	
 }
 
 void Chades_hbt_master::IncrementCFs(Chades_hbt_part *parta,Chades_hbt_part *partb){
 	double q,r,ctheta,weight;
 	int iq;
 	wf->getqrctheta(parta->p,parta->x,partb->p,partb->x,&q,&r,&ctheta);
-	/*
-	if(q<cell_list->QMAX){
-		double px=parta->p[1],py=parta->p[2],pz=parta->p[3];
-		double E=parta->p[0];
-		double mass=sqrt(E*E-px*px-py*py-pz*pz);
-		double rapxa=asinh(px/sqrt(mass*mass+py*py+pz*pz));
-		double rapya=asinh(py/sqrt(mass*mass+px*px+pz*pz));
-		double rapza=asinh(pz/sqrt(mass*mass+py*py+px*px));
-		px=partb->p[1],py=partb->p[2],pz=partb->p[3];
-		E=partb->p[0];
-		mass=sqrt(E*E-px*px-py*py-pz*pz);
-		double rapxb=asinh(px/sqrt(mass*mass+py*py+pz*pz));
-		double rapyb=asinh(py/sqrt(mass*mass+px*px+pz*pz));
-		double rapzb=asinh(pz/sqrt(mass*mass+py*py+px*px));
-		if(fabs(rapxa-rapxb)>cell_list->DRAPX || fabs(rapya-rapyb)>cell_list->DRAPY || fabs(rapza-rapzb)>cell_list->DRAPZ){
-			printf("DAMN!!!!\n");
-			exit(1);
-		}
-	}
-	*/
 	
 	if(q<cell_list->QMAX){
 		nsuccess+=1;		
