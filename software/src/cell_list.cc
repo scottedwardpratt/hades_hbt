@@ -7,7 +7,8 @@ Chades_hbt_cell_list::Chades_hbt_cell_list(CparameterMap *parmap){
 	int ix,iy,iz;
 	int inx,iny,inz;
 	//QMAX=parmap->getD("QMAX",50.0);
-	QMAX=parmap->getD("NQMAX",40)*parmap->getD("DELQ",2.0);
+	QMAX=parmap->getD("NQMAX",40)*parmap->getD("DQINV",2.0);
+	printf("QMAX=%g\n",QMAX);
 	double ma=master->wf->m1;
 	double mb=master->wf->m2;
 	double mu=ma*mb/(ma+mb);
@@ -72,7 +73,7 @@ Chades_hbt_cell_list::Chades_hbt_cell_list(CparameterMap *parmap){
 	}
 }
 
-void Chades_hbt_cell_list::FindCell(int pid,Chades_hbt_part *part,Chades_hbt_cell *&cellptr){
+void Chades_hbt_cell_list::FindCell(Chades_hbt_part *part,Chades_hbt_cell *&cellptr){
 	double px=part->p[1],py=part->p[2],pz=part->p[3];
 	double E=part->p[0];
 	double mass=sqrt(E*E-px*px-py*py-pz*pz);

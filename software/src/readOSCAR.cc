@@ -47,7 +47,7 @@ void Chades_hbt_master::ReadOSCAR(){
 					tmp_particle->x[1]=x; tmp_particle->x[2]=y; tmp_particle->x[3]=z;
 					accept=acceptance->Acceptance(pdg,tmp_particle, eff);
 					if(accept){
-						cell_list->FindCell(pid,tmp_particle,cell);
+						cell_list->FindCell(tmp_particle,cell);
 						if(cell!=NULL){
 							cell->partlist_a.push_back(tmp_particle);
 							tmp_particle=new Chades_hbt_part;
@@ -62,7 +62,7 @@ void Chades_hbt_master::ReadOSCAR(){
 					tmp_particle->x[0]=t;
 					tmp_particle->x[1]=x; tmp_particle->x[2]=y; tmp_particle->x[3]=z;
 					if(accept){
-						cell_list->FindCell(pdg,tmp_particle,cell);
+						cell_list->FindCell(tmp_particle,cell);
 						if(cell!=NULL){
 							cell->partlist_b.push_back(tmp_particle);
 							tmp_particle=new Chades_hbt_part;

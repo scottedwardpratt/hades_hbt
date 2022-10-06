@@ -1,6 +1,7 @@
 #ifndef __HADES_HBT_H__
 #define __HADES_HBT_H__
 
+#include <list>
 #include "msu_commonutils/commondefs.h"
 #include "msu_commonutils/parametermap.h"
 #include "msu_coral/coral.h"
@@ -28,6 +29,8 @@ public:
 	void CalcCFs();
 	Chades_hbt_cell_list *cell_list;
 	Chades_hbt_CFs *cfs;
+	int nincrement,nsuccess;
+	Crandy *randy;
 };
 
 class Chades_hbt_cell_list{
@@ -38,7 +41,7 @@ public:
 	double rapxmax,rapymax,rapzmax;
 	double QMAX;
 	vector<vector<vector<Chades_hbt_cell *> >> cell;
-	void FindCell(int pid,Chades_hbt_part *part,Chades_hbt_cell *&cell);
+	void FindCell(Chades_hbt_part *part,Chades_hbt_cell *&cell);
 	void Add2List(Chades_hbt_part &parta);
 	static Chades_hbt_master *master;
 };
@@ -49,6 +52,7 @@ public:
 	vector<Chades_hbt_part *> partlist_a;
 	vector<Chades_hbt_part *> partlist_b;
 	vector<vector<vector<Chades_hbt_cell *>>> neighbor;
+	vector<vector<int>> nlist[2][2][2];
 };
 
 class Chades_hbt_resinfo{

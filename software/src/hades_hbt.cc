@@ -27,13 +27,15 @@ Chades_hbt_master::Chades_hbt_master(string parsfilename){
 	cfs=new Chades_hbt_CFs(&parmap);
 	
 	acceptance=new Chades_hbt_acceptance();
+	randy=new Crandy(-12345);
 	
 }
 
 void Chades_hbt_master::CalcCFs(){
 	int icx,icy,icz,jcx,jcy,jcz,inx,iny,inz,ia,ib,na,nb;
 	int inxmin=1,inymin,inzmin,ibmin;
-	int nincrement=0;
+	int natot=0;
+	nincrement=nsuccess=0;
 	if(PIDA!=PIDB)
 		inxmin=0;
 	Chades_hbt_cell *cella,*cellb;
@@ -43,10 +45,9 @@ void Chades_hbt_master::CalcCFs(){
 			for(icz=0;icz<cell_list->NRAPZ;icz++){
 				cella=cell_list->cell[icx][icy][icz];
 				na=cella->partlist_a.size();
-				if(na>0)
+				natot+=na;
 				for(ia=0;ia<na;ia++){
 					parta=cella->partlist_a[ia];
-					
 					for(inx=inxmin;inx<3;inx++){
 						inymin=0;
 						if(PIDA==PIDB && inx==1)
@@ -85,18 +86,44 @@ void Chades_hbt_master::CalcCFs(){
 			}
 		}
 	}
-	printf("nincrement=%d\n",nincrement);
+	printf("nincrement=%d, nsuccess=%d, success rate=%g,%g\n",
+	nincrement,nsuccess,
+	2.0*double(nincrement)/(double(natot)*double(natot-1)),
+	double(nsuccess)/double(nincrement));
 }
 
 void Chades_hbt_master::IncrementCFs(Chades_hbt_part *parta,Chades_hbt_part *partb){
 	double q,r,ctheta,weight;
 	int iq;
 	wf->getqrctheta(parta->p,parta->x,partb->p,partb->x,&q,&r,&ctheta);
-	weight=wf->GetPsiSquared(q,r,ctheta);
+	/*
+	if(q<cell_list->QMAX){
+		double px=parta->p[1],py=parta->p[2],pz=parta->p[3];
+		double E=parta->p[0];
+		double mass=sqrt(E*E-px*px-py*py-pz*pz);
+		double rapxa=asinh(px/sqrt(mass*mass+py*py+pz*pz));
+		double rapya=asinh(py/sqrt(mass*mass+px*px+pz*pz));
+		double rapza=asinh(pz/sqrt(mass*mass+py*py+px*px));
+		px=partb->p[1],py=partb->p[2],pz=partb->p[3];
+		E=partb->p[0];
+		mass=sqrt(E*E-px*px-py*py-pz*pz);
+		double rapxb=asinh(px/sqrt(mass*mass+py*py+pz*pz));
+		double rapyb=asinh(py/sqrt(mass*mass+px*px+pz*pz));
+		double rapzb=asinh(pz/sqrt(mass*mass+py*py+px*px));
+		if(fabs(rapxa-rapxb)>cell_list->DRAPX || fabs(rapya-rapyb)>cell_list->DRAPY || fabs(rapza-rapzb)>cell_list->DRAPZ){
+			printf("DAMN!!!!\n");
+			exit(1);
+		}
+	}
+	*/
 	
-	if(q<cfs->DQINV*cfs->NQINV){
-		iq=lrint(floor(q/cfs->DQINV));
-		cfs->C_of_qinv[iq]+=weight;
-		cfs->denom_of_qinv[iq]+=1;		
+	if(q<cell_list->QMAX){
+		nsuccess+=1;		
+		if(q<cfs->DQINV*cfs->NQINV){
+			weight=wf->GetPsiSquared(q,r,ctheta);
+			iq=lrint(floor(q/cfs->DQINV));
+			cfs->C_of_qinv[iq]+=weight;
+			cfs->denom_of_qinv[iq]+=1;
+		}
 	}
 }
