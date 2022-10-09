@@ -13,6 +13,7 @@ void Chades_hbt_master::ReadOSCAR(){
 	Chades_hbt_cell *cell;
 	Chades_hbt_part *tmp_particle=new Chades_hbt_part();
 	string directory=parmap.getS("OSCAR_DIRNAME","oscar_files");
+	double taucompare=parmap.getD("OSCAR_TAUCOMPRE",25.0);
 	
 	// opening the files from first -> last:
 	ifstream f_in;
@@ -43,8 +44,12 @@ void Chades_hbt_master::ReadOSCAR(){
 				if(pdg == PIDA){
 					tmp_particle->p[0]=p0;
 					tmp_particle->p[1]=px; tmp_particle->p[2]=py; tmp_particle->p[3]=pz;
-					tmp_particle->x[0]=t;
-					tmp_particle->x[1]=x; tmp_particle->x[2]=y; tmp_particle->x[3]=z;
+					//tmp_particle->x[0]=t;
+					tmp_particle->x[1]=x-(px/p0)*(t-taucompare);
+					tmp_particle->x[2]=y-(py/p0)*(t-taucompare);
+					tmp_particle->x[3]=z-(pz/p0)*(t-taucompare);
+					tmp_particle->x[0]=taucompare;
+					
 					accept=acceptance->Acceptance(pdg,tmp_particle, eff);
 					if(accept){
 						cell_list->FindCell(tmp_particle,cell);
@@ -76,7 +81,7 @@ void Chades_hbt_master::ReadOSCAR(){
 			for(int i = 0; i < 2; i++) f_in >> dust;
 			event++;
 		}
-		CLog::Info("readOSCAR check, nparts="+to_string(nparts));
+		CLog::Info("readOSCAR: read in "+to_string(nparts)+" parts\n");
 	}//end of loop over files
 	delete tmp_particle;
 }
