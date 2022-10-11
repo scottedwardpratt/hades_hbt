@@ -27,10 +27,12 @@ public:
 	Chades_hbt_acceptance *acceptance;
 	void IncrementCFs(Chades_hbt_part *parta,Chades_hbt_part *partb);
 	void CalcCFs();
+	void CalcCFs_Gaussian(double Rx,double Ry,double Rz);
 	Chades_hbt_cell_list *cell_list;
 	Chades_hbt_CFs *cfs;
 	int nincrement,nsuccess;
 	Crandy *randy;
+	char message[200];
 };
 
 class Chades_hbt_cell_list{
@@ -44,6 +46,7 @@ public:
 	void FindCell(Chades_hbt_part *part,Chades_hbt_cell *&cell);
 	void Add2List(Chades_hbt_part &parta);
 	static Chades_hbt_master *master;
+	char message[200];
 };
 
 class Chades_hbt_cell{
@@ -67,6 +70,7 @@ public:
 	Chades_hbt_acceptance();
 	bool Acceptance(int pid,Chades_hbt_part *part,double &efficiency);
 	double pTmax,pTmin,thetamin,thetamax;
+	char message[200];
 };
 
 class Chades_hbt_CFs{
@@ -77,6 +81,15 @@ public:
 	vector<double> C_of_qinv;
 	vector<int> denom_of_qinv;
 	void PrintC_of_qinv();
+	void WriteC_of_qinv(string filename);
+	void WriteC3D(string dirname);
+	bool XSYM,YSYM,ZSYM;
+	
+	C3DArray *threed_num,*threed_den;
+	double Q3DMAX,DELQ3D;
+	int NQ3D;
+	
+	char message[200];
 };
 
 class Chades_hbt_part{
@@ -86,8 +99,9 @@ public:
 		printf("x=(%g,%g,%g,%g)\n",x[0],x[1],x[2],x[3]);
 		printf("mass=%g, p=(%g,%g,%g,%g)\n",p[0],mass,p[1],p[2],p[3]);
 	}
-	double x[4];
-	double p[4];
+	FourVector x;
+	FourVector p;
+	char message[200];
 };
 
 #endif
