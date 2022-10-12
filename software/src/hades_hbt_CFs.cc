@@ -17,7 +17,6 @@ Chades_hbt_CFs::Chades_hbt_CFs(CparameterMap *parmap){
 	ZSYM=parmap->getB("ZSYM",ZSYM);
 	
 	
-	
 	threed_num=new C3DArray(NQ3D,DELQ3D,XSYM,YSYM,ZSYM);
 	threed_den=new C3DArray(NQ3D,DELQ3D,XSYM,YSYM,ZSYM);
 		

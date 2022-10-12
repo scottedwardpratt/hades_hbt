@@ -8,6 +8,9 @@ Chades_hbt_master::Chades_hbt_master(string parsfilename){
 	CLog::Info("parsfilename="+parsfilename+"\n");
 	PIDA=parmap.getI("PIDA",211);
 	PIDB=parmap.getI("PIDB",211);
+	if(PIDA==PIDB)
+		parmap.set("XYZSYM","true");
+	
 	
 	
 	
@@ -92,7 +95,7 @@ void Chades_hbt_master::CalcCFs(){
 void Chades_hbt_master::CalcCFs_Gaussian(double Rx,double Ry,double Rz){
 	double x,y,z,qx,qy,qz,q,r,ctheta,weight;
 	int imc,NMC=parmap.getI("NMC_GAUSSIAN",1000);
-	int iqx,iqy,iqz,isx,isy,isz,nsx=2,nsy=2,nsz=2;
+	int iq,iqx,iqy,iqz,isx,isy,isz,nsx=2,nsy=2,nsz=2;
 	if(cfs->XSYM)
 		nsx=1;
 	if(cfs->YSYM)
@@ -105,30 +108,33 @@ void Chades_hbt_master::CalcCFs_Gaussian(double Rx,double Ry,double Rz){
 				for(isy=0;isy<nsy;isy++){
 					for(iqz=0;iqz<cfs->NQ3D;iqz++){
 						for(isz=0;isz<nsz;isz++){
-							qx=cfs->DELQ3D*(iqx+randy->ran());
-							qy=cfs->DELQ3D*(iqy+randy->ran());
-							qz=cfs->DELQ3D*(iqz+randy->ran());
-							if(isx>0)
-								qx=-qx;
-							if(isy>0)
-								qy=-qy;
-							if(isz>0)
-								qz=-qz;
-							q=sqrt(qx*qx+qy*qy+qz*qz);
-							weight=1.0;
-							if(q<cell_list->QMAX){
-								if(q<cfs->DQINV*cfs->NQINV){
-									if(fabs(qx)<cfs->Q3DMAX && fabs(qy)<cfs->Q3DMAX && fabs(qz)<cfs->Q3DMAX){
-										nsuccess+=1;
-										for(imc=0;imc<NMC;imc++){
-											x=Rx*randy->ran_gauss();
-											y=Ry*randy->ran_gauss();
-											z=Rz*randy->ran_gauss();
-											r=sqrt(x*x+y*y+z*z);	
-											ctheta=(qx*x+qy*y+qz*z)/(q*r);
-											weight=wf->GetPsiSquared(q,r,ctheta);
+							for(imc=0;imc<NMC;imc++){
+								qx=cfs->DELQ3D*(iqx+randy->ran());
+								qy=cfs->DELQ3D*(iqy+randy->ran());
+								qz=cfs->DELQ3D*(iqz+randy->ran());
+								if(isx>0)
+									qx=-qx;
+								if(isy>0)
+									qy=-qy;
+								if(isz>0)
+									qz=-qz;
+								q=sqrt(qx*qx+qy*qy+qz*qz);
+								weight=1.0;
+								if(q<cell_list->QMAX){
+									if(q<cfs->DQINV*cfs->NQINV){
+										x=Rx*randy->ran_gauss();
+										y=Ry*randy->ran_gauss();
+										z=Rz*randy->ran_gauss();
+										r=sqrt(x*x+y*y+z*z);
+										ctheta=(qx*x+qy*y+qz*z)/(q*r);
+										weight=wf->GetPsiSquared(q,r,ctheta);
+										iq=lrint(floor(q/cfs->DQINV));
+										cfs->C_of_qinv[iq]+=weight;
+										cfs->denom_of_qinv[iq]+=1;
+										if(fabs(qx)<cfs->Q3DMAX && fabs(qy)<cfs->Q3DMAX && fabs(qz)<cfs->Q3DMAX){
+											nsuccess+=1;
 											cfs->threed_num->IncrementElement(qx,qy,qz,weight);
-											cfs->threed_den->IncrementElement(qz,qy,qz,1.0);
+											cfs->threed_den->IncrementElement(qx,qy,qz,1.0);
 										}
 									}
 								}
