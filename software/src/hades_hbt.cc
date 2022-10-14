@@ -153,10 +153,6 @@ void Chades_hbt_master::IncrementCFs(Chades_hbt_part *parta,Chades_hbt_part *par
 	double q,r,ctheta,weight=1.0;
 	int iq;
 	wf->getqrctheta(parta->p,parta->x,partb->p,partb->x,q,r,ctheta);
-	if(parta==partb){
-		printf("parta=partb!!!\n");
-		exit(1);
-	}
 	
 	if(r>1.0E-8){
 	
@@ -165,10 +161,9 @@ void Chades_hbt_master::IncrementCFs(Chades_hbt_part *parta,Chades_hbt_part *par
 			if(q<cfs->DQINV*cfs->NQINV){
 				weight=wf->GetPsiSquared(q,r,ctheta);
 				if(weight!=weight){
-					printf("weight=%g, q=%g, r=%g, ctheta=%g\n",weight,q,r,ctheta);
 					parta->Print();
 					partb->Print();
-					exit(1);
+					CLog::Fatal("weight=Nan\n");
 				}
 				iq=lrint(floor(q/cfs->DQINV));
 				if(iq<int(cfs->C_of_qinv.size())){

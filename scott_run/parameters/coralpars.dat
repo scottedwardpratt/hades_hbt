@@ -17,7 +17,6 @@ double DELQ3D 4
 int NQ3DARRAY 20
 string OSCAR_FILENAME_FILENAMES oscarfilenames_URQMD.txt
 double OSCAR_BMIN 4.5
-double OSCAR_BMAX 4.52
-
+double OSCAR_BMAX 4.6
 bool LOG_FILENAME INTERACTIVE
 #bool LOG_FILENAME coral_output.txt
