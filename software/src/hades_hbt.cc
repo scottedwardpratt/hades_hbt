@@ -64,7 +64,6 @@ void Chades_hbt_master::CalcCFs(){
 							for(inz=inzmin;inz<3;inz++){
 								cellb=cella->neighbor[inx][iny][inz];
 								if(cellb!=NULL){
-									printf("asize=%lu bsize=%lu\n",cella->partlist_a.size(),cellb->partlist_a.size());
 									ibmin=0;
 									if(PIDA==PIDB && inx==1 && iny==1 && inz==1){
 										ibmin=ia+1;

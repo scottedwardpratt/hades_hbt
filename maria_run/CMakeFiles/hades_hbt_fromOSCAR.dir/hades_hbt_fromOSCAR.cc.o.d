@@ -1,6 +1,6 @@
 CMakeFiles/hades_hbt_fromOSCAR.dir/hades_hbt_fromOSCAR.cc.o: \
-  /Users/mariastefaniak/Desktop/Work/femtoscopy_workshop/hades_hbt/scott_run/hades_hbt_fromOSCAR.cc \
-  /Users/mariastefaniak/Desktop/Work/femtoscopy_workshop/commonutils/software/include/msu_commonutils/commonutils.h \
+  /Users/scottpratt/git/hades_hbt/maria_run/hades_hbt_fromOSCAR.cc \
+  /Users/scottpratt/git/commonutils/software/include/msu_commonutils/commonutils.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/cstdio \
   /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__config \
   /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__config_site \
@@ -513,8 +513,8 @@ CMakeFiles/hades_hbt_fromOSCAR.dir/hades_hbt_fromOSCAR.cc.o: \
   /usr/local/Cellar/gsl/2.7.1/include/gsl/gsl_sf_transport.h \
   /usr/local/Cellar/gsl/2.7.1/include/gsl/gsl_sf_trig.h \
   /usr/local/Cellar/gsl/2.7.1/include/gsl/gsl_sf_zeta.h \
-  /Users/mariastefaniak/Desktop/Work/femtoscopy_workshop/commonutils/software/include/msu_commonutils/arrays.h \
-  /Users/mariastefaniak/Desktop/Work/femtoscopy_workshop/commonutils/software/include/msu_commonutils/commondefs.h \
+  /Users/scottpratt/git/commonutils/software/include/msu_commonutils/arrays.h \
+  /Users/scottpratt/git/commonutils/software/include/msu_commonutils/commondefs.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/iostream \
   /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/complex \
   /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/sstream \
@@ -657,12 +657,8 @@ CMakeFiles/hades_hbt_fromOSCAR.dir/hades_hbt_fromOSCAR.cc.o: \
   /usr/local/include/eigen3/Eigen/src/Core/arch/AVX/PacketMath.h \
   /usr/local/include/eigen3/Eigen/src/Core/arch/AVX/TypeCasting.h \
   /usr/local/include/eigen3/Eigen/src/Core/arch/AVX/Complex.h \
-  /usr/local/include/eigen3/Eigen/src/Core/arch/AVX512/PacketMath.h \
-  /usr/local/include/eigen3/Eigen/src/Core/arch/AVX512/TypeCasting.h \
-  /usr/local/include/eigen3/Eigen/src/Core/arch/AVX512/Complex.h \
   /usr/local/include/eigen3/Eigen/src/Core/arch/SSE/MathFunctions.h \
   /usr/local/include/eigen3/Eigen/src/Core/arch/AVX/MathFunctions.h \
-  /usr/local/include/eigen3/Eigen/src/Core/arch/AVX512/MathFunctions.h \
   /usr/local/include/eigen3/Eigen/src/Core/arch/Default/Settings.h \
   /usr/local/include/eigen3/Eigen/src/Core/arch/Default/GenericPacketMathFunctions.h \
   /usr/local/include/eigen3/Eigen/src/Core/functors/TernaryFunctors.h \
@@ -824,20 +820,20 @@ CMakeFiles/hades_hbt_fromOSCAR.dir/hades_hbt_fromOSCAR.cc.o: \
   /usr/local/include/eigen3/Eigen/src/Eigenvalues/GeneralizedEigenSolver.h \
   /usr/local/include/eigen3/Eigen/src/Eigenvalues/./RealQZ.h \
   /usr/local/include/eigen3/Eigen/src/Eigenvalues/MatrixBaseEigenvalues.h \
-  /Users/mariastefaniak/Desktop/Work/femtoscopy_workshop/commonutils/software/include/msu_commonutils/constants.h \
-  /Users/mariastefaniak/Desktop/Work/femtoscopy_workshop/commonutils/software/include/msu_commonutils/gslmatrix.h \
-  /Users/mariastefaniak/Desktop/Work/femtoscopy_workshop/commonutils/software/include/msu_commonutils/misc.h \
-  /Users/mariastefaniak/Desktop/Work/femtoscopy_workshop/commonutils/software/include/msu_commonutils/parametermap.h \
-  /Users/mariastefaniak/Desktop/Work/femtoscopy_workshop/commonutils/software/include/msu_commonutils/qualifier.h \
-  /Users/mariastefaniak/Desktop/Work/femtoscopy_workshop/commonutils/software/include/msu_commonutils/randy.h \
-  /Users/mariastefaniak/Desktop/Work/femtoscopy_workshop/commonutils/software/include/msu_commonutils/sf.h \
-  /Users/mariastefaniak/Desktop/Work/femtoscopy_workshop/commonutils/software/include/msu_commonutils/log.h \
-  /Users/mariastefaniak/Desktop/Work/femtoscopy_workshop/coral/software/include/msu_coral/coral.h \
-  /Users/mariastefaniak/Desktop/Work/femtoscopy_workshop/coral/software/include/msu_coral/cfcalc.h \
-  /Users/mariastefaniak/Desktop/Work/femtoscopy_workshop/coral/software/include/msu_coral/kernel.h \
-  /Users/mariastefaniak/Desktop/Work/femtoscopy_workshop/coral/software/include/msu_coral/minimization.h \
-  /Users/mariastefaniak/Desktop/Work/femtoscopy_workshop/coral/software/include/msu_coral/sfit.h \
-  /Users/mariastefaniak/Desktop/Work/femtoscopy_workshop/coral/software/include/msu_coral/sourcecalc.h \
-  /Users/mariastefaniak/Desktop/Work/femtoscopy_workshop/coral/software/include/msu_coral/source2cf.h \
-  /Users/mariastefaniak/Desktop/Work/femtoscopy_workshop/coral/software/include/msu_coral/wavefunction.h \
-  /Users/mariastefaniak/Desktop/Work/femtoscopy_workshop/hades_hbt/software/include/hades_hbt/hades_hbt.h
+  /Users/scottpratt/git/commonutils/software/include/msu_commonutils/constants.h \
+  /Users/scottpratt/git/commonutils/software/include/msu_commonutils/gslmatrix.h \
+  /Users/scottpratt/git/commonutils/software/include/msu_commonutils/misc.h \
+  /Users/scottpratt/git/commonutils/software/include/msu_commonutils/parametermap.h \
+  /Users/scottpratt/git/commonutils/software/include/msu_commonutils/qualifier.h \
+  /Users/scottpratt/git/commonutils/software/include/msu_commonutils/randy.h \
+  /Users/scottpratt/git/commonutils/software/include/msu_commonutils/sf.h \
+  /Users/scottpratt/git/commonutils/software/include/msu_commonutils/log.h \
+  /Users/scottpratt/git/coral/software/include/msu_coral/coral.h \
+  /Users/scottpratt/git/coral/software/include/msu_coral/cfcalc.h \
+  /Users/scottpratt/git/coral/software/include/msu_coral/kernel.h \
+  /Users/scottpratt/git/coral/software/include/msu_coral/minimization.h \
+  /Users/scottpratt/git/coral/software/include/msu_coral/sfit.h \
+  /Users/scottpratt/git/coral/software/include/msu_coral/sourcecalc.h \
+  /Users/scottpratt/git/coral/software/include/msu_coral/source2cf.h \
+  /Users/scottpratt/git/coral/software/include/msu_coral/wavefunction.h \
+  /Users/scottpratt/git/hades_hbt/software/include/hades_hbt/hades_hbt.h

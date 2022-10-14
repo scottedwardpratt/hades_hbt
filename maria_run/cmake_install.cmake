@@ -1,4 +1,4 @@
-# Install script for directory: /Users/mariastefaniak/Desktop/Work/femtoscopy_workshop/hades_hbt/scott_run
+# Install script for directory: /Users/scottpratt/git/hades_hbt/maria_run
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/Users/mariastefaniak/Desktop/Work/femtoscopy_workshop/hades_hbt/scott_run/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Users/scottpratt/git/hades_hbt/maria_run/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
