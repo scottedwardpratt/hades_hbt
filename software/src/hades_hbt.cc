@@ -8,8 +8,11 @@ Chades_hbt_master::Chades_hbt_master(string parsfilename){
 	CLog::Info("parsfilename="+parsfilename+"\n");
 	PIDA=parmap.getI("PIDA",211);
 	PIDB=parmap.getI("PIDB",211);
-	if(PIDA==PIDB)
-		parmap.set("XYZSYM","true");
+	if(PIDA==PIDB){
+		char tf[6];
+		sprintf(tf,"true");
+		parmap.set("XYZSYM",tf);
+	}
 	
 	
 	
