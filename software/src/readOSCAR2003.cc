@@ -8,12 +8,15 @@ using namespace std;
 
 void Chades_hbt_master::ReadOSCAR_2003(){
 	int nr_ev=1;
-	int firstFile=parmap.getI("FIRST_OSCARFILE",0);
-	int lastFile=parmap.getI("LAST_OSCARFILE",10);
 	Chades_hbt_cell *cell;
 	Chades_hbt_part *tmp_particle=new Chades_hbt_part();
 	string directory=parmap.getS("OSCAR_DIRNAME","oscar_files");
-	double taucompare=parmap.getD("OSCAR_TAUCOMPRE",25.0);
+	double taucompare=parmap.getD("OSCAR_TAUCOMPRE",20.0);
+	string filenamefilenames=parmap.getS("OSCAR_FILENAME_FILENAMES","oscarfilenames_URQMD.txt");
+
+	double BMIN=parmap.getD("OSCAR_BMIN",-0.1);
+	double BMAX=parmap.getD("OSCAR_BMAX",100.0);
+	
 	
 	// opening the files from first -> last:
 	ifstream f_in;
@@ -22,9 +25,24 @@ void Chades_hbt_master::ReadOSCAR_2003(){
 	double t, x, y, z, mass, p0, px, py, pz, charge, bim;
 	int pid,pdg,nparts=0;
 	int nrParticlesInEvent;
+	
+	list<string> oscar_filenames;
+	list<string>::iterator fiter;
+	string filename;
+	char dummy[200];
+	FILE  *fptr_filenames=fopen(filenamefilenames.c_str(),"r");
+	do{
+		fscanf(fptr_filenames,"%s",dummy);
+		filename=dummy;
+		oscar_filenames.push_back(filename);
+	}while(!feof(fptr_filenames));
+	fclose(fptr_filenames);
+	
+	
+	
 	int event = 0;
-	for(int iFile = firstFile; iFile <= lastFile; iFile++){
-		string infile_name = directory +"/particle_lists_"+ to_string(iFile)+".oscar"; //create the name of the files to be read
+	for(fiter=oscar_filenames.begin();fiter!=oscar_filenames.end();++fiter){
+		string infile_name=*fiter;
 		// open input file
 		CLog::Info("Reading "+infile_name+"\n");
 		f_in.open( infile_name );
@@ -78,6 +96,10 @@ void Chades_hbt_master::ReadOSCAR_2003(){
 			} // end particles loop
 			for(int i = 0; i < 6; i++) f_in >> dust;
 			f_in >> bim;
+			if(bim<BMIN || bim>BMAX){
+				sprintf(message,"bim=%g, but BMIN=%g and BMAX=%g\n",bim,BMIN,BMAX);
+				CLog::Info(message);
+			}
 			for(int i = 0; i < 2; i++) f_in >> dust;
 			event++;
 		}
