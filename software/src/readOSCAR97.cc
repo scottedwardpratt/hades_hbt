@@ -50,14 +50,9 @@ void Chades_hbt_master::ReadOSCAR_1997(){
 			fscanf(fptr_in,"%d %d %lf %lf",&nr_event,&nrParticlesInEvent,&bim,&dumbo);
 			fgets(dummy,100,fptr_in);
 			if(!feof(fptr_in)){
-				if(nrParticlesInEvent==0){
-					printf("nrParticlesInEvent=0!!!, nr_event=%d, bim=%g, last tracknumber=%d\n",nr_event,bim,tracknumber);
-					exit(1);
-				}
 				for(int i = 0; i < nrParticlesInEvent; i++){//reading particles in event loop
 					fscanf(fptr_in,"%d %d  %lf %lf %lf %lf  %lf  %lf %lf %lf %lf",&tracknumber,&pid,&px,&py,&pz,&p0,&mass,&x,&y,&z,&t);
 					fgets(dummy,100,fptr_in);
-					//printf("tracknumber=%d, pid=%d\n",tracknumber,pid);
 					if(bim>=BMIN && bim<=BMAX){
 						mass*=1000.0; p0*=1000.0; px*=1000.0; py*=1000.0; pz*=1000.0;
 						p0=sqrt(mass*mass+px*px+py*py+pz*pz);
@@ -106,6 +101,5 @@ void Chades_hbt_master::ReadOSCAR_1997(){
 		fclose(fptr_in);
 		CLog::Info("readOSCAR: read in "+to_string(nparts)+" parts\n");
 	}//end of loop over files
-	printf("finished reading, npartsa=%d\n",nparts);
 	delete tmp_particle;
 }
