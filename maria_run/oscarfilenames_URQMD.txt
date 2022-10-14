@@ -1,0 +1,10 @@
+/Users/mariastefaniak/Desktop/Work/femtoscopy_workshop/hades_hbt/scott_run/oscar_files/particle_lists_1893.oscar
+/Users/mariastefaniak/Desktop/Work/femtoscopy_workshop/hades_hbt/scott_run/oscar_files/particle_lists_1401.oscar
+/Users/mariastefaniak/Desktop/Work/femtoscopy_workshop/hades_hbt/scott_run/oscar_files/particle_lists_1095.oscar
+/Users/mariastefaniak/Desktop/Work/femtoscopy_workshop/hades_hbt/scott_run/oscar_files/particle_lists_1444.oscar
+/Users/mariastefaniak/Desktop/Work/femtoscopy_workshop/hades_hbt/scott_run/oscar_files/particle_lists_491.oscar
+/Users/mariastefaniak/Desktop/Work/femtoscopy_workshop/hades_hbt/scott_run/oscar_files/particle_lists_803.oscar
+/Users/mariastefaniak/Desktop/Work/femtoscopy_workshop/hades_hbt/scott_run/oscar_files/particle_lists_846.oscar
+/Users/mariastefaniak/Desktop/Work/femtoscopy_workshop/hades_hbt/scott_run/oscar_files/particle_lists_728.oscar
+/Users/mariastefaniak/Desktop/Work/femtoscopy_workshop/hades_hbt/scott_run/oscar_files/particle_lists_1369.oscar
+/Users/mariastefaniak/Desktop/Work/femtoscopy_workshop/hades_hbt/scott_run/oscar_files/particle_lists_1700.oscar
