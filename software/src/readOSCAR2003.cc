@@ -6,7 +6,7 @@
 
 using namespace std;
 
-void Chades_hbt_master::ReadOSCAR(){
+void Chades_hbt_master::ReadOSCAR_2003(){
 	int nr_ev=1;
 	int firstFile=parmap.getI("FIRST_OSCARFILE",0);
 	int lastFile=parmap.getI("LAST_OSCARFILE",10);

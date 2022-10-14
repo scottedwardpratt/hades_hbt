@@ -13,11 +13,11 @@ int NRMAX 150
 bool IDENTICAL true
 int PIDA 2212
 int PIDB 2212
-string OSCAR_DIRNAME oscar_files
-string FIRST_OSCARRFILE 0
-string LAST_OSCARFILE 0
 double DELQ3D 4
 int NQ3DARRAY 20
+string OSCAR_FILENAME_FILENAMES oscarfilenames_URQMD.txt
+double OSCAR_BMIN 4.5
+double OSCAR_BMAX 4.52
 
 bool LOG_FILENAME INTERACTIVE
 #bool LOG_FILENAME coral_output.txt

@@ -21,7 +21,8 @@ public:
 	Chades_hbt_master(string parsfilename);
 	int PIDA,PIDB;
 	CparameterMap parmap;
-	void ReadOSCAR();
+	void ReadOSCAR_1997();
+	void ReadOSCAR_2003();
 	CWaveFunction *wf;
 	double GetCorrelationWeight(Chades_hbt_part *parta,Chades_hbt_part *partb);
 	Chades_hbt_acceptance *acceptance;

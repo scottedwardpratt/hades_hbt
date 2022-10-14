@@ -44,6 +44,7 @@ void Chades_hbt_master::CalcCFs(){
 		inxmin=1;
 	Chades_hbt_cell *cella,*cellb;
 	Chades_hbt_part *parta,*partb;
+	printf("calculating CFs\n");
 	for(icx=0;icx<cell_list->NRAPX;icx++){
 		for(icy=0;icy<cell_list->NRAPY;icy++){
 			for(icz=0;icz<cell_list->NRAPZ;icz++){
@@ -63,6 +64,7 @@ void Chades_hbt_master::CalcCFs(){
 							for(inz=inzmin;inz<3;inz++){
 								cellb=cella->neighbor[inx][iny][inz];
 								if(cellb!=NULL){
+									printf("asize=%lu bsize=%lu\n",cella->partlist_a.size(),cellb->partlist_a.size());
 									ibmin=0;
 									if(PIDA==PIDB && inx==1 && iny==1 && inz==1){
 										ibmin=ia+1;
@@ -151,14 +153,29 @@ void Chades_hbt_master::IncrementCFs(Chades_hbt_part *parta,Chades_hbt_part *par
 	double q,r,ctheta,weight=1.0;
 	int iq;
 	wf->getqrctheta(parta->p,parta->x,partb->p,partb->x,q,r,ctheta);
+	if(parta==partb){
+		printf("parta=partb!!!\n");
+		exit(1);
+	}
 	
-	if(q<cell_list->QMAX){
-		nsuccess+=1;		
-		if(q<cfs->DQINV*cfs->NQINV){
-			weight=wf->GetPsiSquared(q,r,ctheta);
-			iq=lrint(floor(q/cfs->DQINV));
-			cfs->C_of_qinv[iq]+=weight;
-			cfs->denom_of_qinv[iq]+=1;
+	if(r>1.0E-8){
+	
+		if(q<cell_list->QMAX){
+			nsuccess+=1;		
+			if(q<cfs->DQINV*cfs->NQINV){
+				weight=wf->GetPsiSquared(q,r,ctheta);
+				if(weight!=weight){
+					printf("weight=%g, q=%g, r=%g, ctheta=%g\n",weight,q,r,ctheta);
+					parta->Print();
+					partb->Print();
+					exit(1);
+				}
+				iq=lrint(floor(q/cfs->DQINV));
+				if(iq<int(cfs->C_of_qinv.size())){
+					cfs->C_of_qinv[iq]+=weight;
+					cfs->denom_of_qinv[iq]+=1;
+				}
+			}
 		}
 	}
 	
