@@ -1,4 +1,4 @@
-int NMC	10000
+int NMC	1000000
 int NQMAX 40
 double DQINV 2.0
 double DELQ 2.0
