@@ -14,6 +14,10 @@ double m1=938.28;
 double m2=2.0*m1-2.224;
 int Q1Q2=0;
 
+void SolveTanXoverX(double target,double &x);
+
+void FixA(double BE,int nwells,vector<double> &V0,vector<double> &a);
+
 void SquareWell_Init(int ell,int nwells,vector<double> &V0,vector<double> &a,vector<double> &delta,double &scatt_length);
 
 int main(int argc,char *argv[]){
@@ -27,7 +31,7 @@ int main(int argc,char *argv[]){
 	vector<double> delta;
 	double scatt_length;
 	V0.resize(nwells);
-	a.resize(nwells);
+	a.resize(nwells+1);
 	delta.resize(NQMAX);
 	V0[0]=atof(argv[1]);
 	V0[1]=atof(argv[2]);
@@ -35,20 +39,18 @@ int main(int argc,char *argv[]){
 	a[0]=atof(argv[4]);
 	a[1]=atof(argv[5]);
 	a[2]=atof(argv[6]);
+	a[3]=1.0E20;
 	printf("V=(%g,%g,%g), a=(%g,%g,%g)\n",V0[0],V0[1],V0[2],a[0],a[1],a[2]);
 	
-	//V0[0]=-100; V0[1]=30; V0[3]=-20;
-	//printf("Enter V0 V1: ");
-	//scanf("%lf %lf",&V0[0],&V0[1]);
-	a[0]=0.75;  a[1]=1.5; a[3]=4.5;
-	SquareWell_Init(ell,nwells,V0,a,delta,scatt_length);
-	FILE *fptr=fopen("phaseshifts.txt","w");
-	fprintf(fptr,"# %g\n",scatt_length);
-	for(int iq=0;iq<NQMAX;iq++){
-		double q=(iq+0.5)*DELQ;
-		fprintf(fptr,"%6.3f %8.3f\n",q,delta[iq]);
+	double target,x;
+	for(int itest=0;itest<10;itest++){
+		printf("Enter target: ");
+		scanf("%lf",&target);
+		SolveTanXoverX(target,x);
 	}
-	fclose(fptr);
+	
+	
+	FixA(7.8,nwells,V0,a);
 	return 0;
 }
 
@@ -226,6 +228,75 @@ void SquareWell_Init(int ell,int nwells,vector<double> &V0,vector<double> &a,vec
 	
 }
 
+void FixA(double BE,int nwells,vector<double> &V0,vector<double> &a){
+	double mu=m1*m2/(m1+m2);
+	double Q,lnderiv;
+	int iwell;
+	vector<double> q(nwells+1),KE(nwells+1),delta(nwells+1),A(nwells+1),psiborder(nwells+1);
+	A[nwells]=1.0;
+	KE[nwells]=-BE;
+	q[nwells]=sqrt(2.0*mu*fabs(KE[nwells]))/HBARC;
+	delta[0]=0.0;
+	A[0]=1.0;
+	delta[nwells]=0.0;
+	for(iwell=0;iwell<nwells;iwell++){
+		KE[iwell]=-BE-V0[iwell];
+		q[iwell]=sqrt(2.0*mu*fabs(KE[iwell]))/HBARC;
+	}
+	for(iwell=0;iwell<nwells-1;iwell++){
+		if(KE[iwell]>0.0){
+			psiborder[iwell]=A[iwell]*sin(q[iwell]*a[iwell]+delta[iwell]);
+			lnderiv=q[iwell]*cos(q[iwell]*a[iwell]+delta[iwell])/sin(q[iwell]*a[iwell]+delta[iwell]);
+		}
+		else{
+			psiborder[iwell]=A[iwell]*sinh(q[iwell]*a[iwell]+delta[iwell]);
+			lnderiv=q[iwell]*cosh(q[iwell]*a[iwell]+delta[iwell])/sinh(q[iwell]*a[iwell]+delta[iwell]);
+		}
+		printf("iwell=%d, lnderiv=%g\n",iwell,lnderiv);
+		if(KE[iwell+1]>0){
+			delta[iwell+1]=-q[iwell+1]*a[iwell]+atan(q[iwell]/lnderiv);
+			A[iwell+1]=psiborder[iwell]/sin(q[iwell+1]*a[iwell]+delta[iwell+1]);
+		}
+		else{
+			printf("x=%g,lnderiv=%g\n",q[iwell]/lnderiv,lnderiv);
+			delta[iwell+1]=-q[iwell+1]*a[iwell]+atanh(q[iwell]/lnderiv);
+			A[iwell+1]=psiborder[iwell]/sin(q[iwell+1]*a[iwell]+delta[iwell+1]);
+		}
+	}
+	printf("iwell=%d, lnderiv=%g\n",nwells-1,lnderiv);
+	if(KE[nwells-1]>0.0){
+		A[nwells-1]=(-1.0/q[nwells-1])*atan(q[nwells-1]/q[nwells])-delta[nwells-1]/q[nwells-1];
+	}
+	else{
+		A[nwells-1]=(-1.0/q[nwells-1])*atanh(q[nwells-1]/q[nwells])-delta[nwells-1]/q[nwells-1];
+	}
+	A[nwells]=psiborder[nwells-1];
+	
+	for(iwell=0;iwell<=nwells;iwell++){
+		printf("%d: a=%6.2f KE=%7.3f, q=%7.3f, A=%7.3f, delta=%7.3f\n",iwell,a[iwell],KE[iwell],q[iwell],A[iwell],delta[iwell]);
+	}
+	
+	printf("new amax=%g\n",a[nwells+1]);
+	double r,delr=0.1,psi;
+	for(r=0.0;r<5.0;r+=delr){
+		iwell=0;
+		while(r>a[iwell] && iwell<nwells)
+			iwell+=1;
+		if(iwell<nwells){
+			if(KE[iwell]<0.0){
+				psi=A[iwell]*sin(q[iwell]*r+delta[iwell]);
+			}
+			else{
+				psi=A[iwell]*sinh(q[iwell]*r+delta[iwell]);
+			}
+		}
+		else{
+			psi=A[nwells]*exp(q[nwells]*(r-a[nwells-1]));
+		}
+		printf("%7.3f %d %7.3f\n",r,iwell,psi);
+	}	
+}
+
 void SolveTanXoverX(double target,double &x){
 	double guess,delx,y,dydx,missby=1.0E10;
 	int ntry=0;
@@ -286,4 +357,5 @@ void SolveTanXoverX(double target,double &x){
 	}
 	printf("----- missby=%g, x=%g, ntry=%d\n",missby,x,ntry);
 }
+	
 
