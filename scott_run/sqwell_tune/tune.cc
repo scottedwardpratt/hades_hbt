@@ -14,34 +14,70 @@ double m1=938.28;
 double m2=2.0*m1-2.224;
 int Q1Q2=0;
 
+void InvertTanXoverX(double target,double &x);
+
+bool FixV0(double BE,int nwells,vector<double> &V0,vector<double> &a);
+
 void SquareWell_Init(int ell,int nwells,vector<double> &V0,vector<double> &a,vector<double> &delta,double &scatt_length);
 
 int main(int argc,char *argv[]){
+	/*
 	if(argc!=7){
 		printf("argc=%d, but must be 7\n",argc);
 		exit(1);
 	}
-	int nwells=3,ell=0;
-	vector<double> V0;
-	vector<double> a;
+	*/
+	double chi,chibest=1.0E10;
+	Crandy randy(-12345);
+	bool success;
+	int nwells=3,ell=0,iwell;
+	vector<double> V0,V0best;
+	vector<double> a,abest;
 	vector<double> delta;
-	double scatt_length;
+	double scatt_length,BE=8.481; //He-3 binding energy=7.718, 8.481 for triton
 	V0.resize(nwells);
+	V0best.resize(nwells);
 	a.resize(nwells);
+	abest.resize(nwells);
 	delta.resize(NQMAX);
+	/*
 	V0[0]=atof(argv[1]);
 	V0[1]=atof(argv[2]);
 	V0[2]=atof(argv[3]);
 	a[0]=atof(argv[4]);
 	a[1]=atof(argv[5]);
-	a[2]=atof(argv[6]);
-	printf("V=(%g,%g,%g), a=(%g,%g,%g)\n",V0[0],V0[1],V0[2],a[0],a[1],a[2]);
+	a[2]=atof(argv[6]);*/
 	
-	//V0[0]=-100; V0[1]=30; V0[3]=-20;
-	//printf("Enter V0 V1: ");
-	//scanf("%lf %lf",&V0[0],&V0[1]);
-	a[0]=0.75;  a[1]=1.5; a[3]=4.5;
-	SquareWell_Init(ell,nwells,V0,a,delta,scatt_length);
+	for(int itry=0;itry<100;itry++){
+		a[0]=0.2+3.0*randy.ran();
+		V0[0]=0.0;
+		for(iwell=1;iwell<nwells;iwell++){
+			a[iwell]=a[iwell-1]+2.0*randy.ran();
+			V0[iwell]=25.0*(1.0-2.0*randy.ran());
+		}
+		success=FixV0(BE,3,V0,a);
+		if(success){
+			SquareWell_Init(ell,nwells,V0,a,delta,scatt_length);
+	
+			chi=5*pow(scatt_length-0.2,2)+pow(delta[24]-27,2);
+			if(chi<chibest){
+				chibest=chi;
+				for(iwell=0;iwell<nwells;iwell++){
+					abest[iwell]=a[iwell];
+					V0best[iwell]=V0[iwell];
+				}
+				printf("chibest=%g\n",chibest);
+				printf("scatt_length=%g\n",scatt_length);
+			}
+		}
+	}	
+	
+	success=FixV0(BE,3,V0best,abest);
+	SquareWell_Init(ell,nwells,V0best,abest,delta,scatt_length);
+	printf("# abest    V0best\n");
+	for(iwell=0;iwell<nwells;iwell++){
+		printf("%8.5f  %10.3f\n",abest[iwell],V0best[iwell]);
+	}
 	FILE *fptr=fopen("phaseshifts.txt","w");
 	fprintf(fptr,"# %g\n",scatt_length);
 	for(int iq=0;iq<NQMAX;iq++){
@@ -226,7 +262,7 @@ void SquareWell_Init(int ell,int nwells,vector<double> &V0,vector<double> &a,vec
 	
 }
 
-void SolveTanXoverX(double target,double &x){
+void InvertTanXoverX(double target,double &x){
 	double guess,delx,y,dydx,missby=1.0E10;
 	int ntry=0;
 	if(target>=0.0 && target<=1.0){
@@ -281,9 +317,85 @@ void SolveTanXoverX(double target,double &x){
 		}
 	}
 	if(ntry==100){
-		printf("Ntry=100!!!\n");
+		printf("Ntry=100!!!,target=%g\n",target);
 		exit(1);
 	}
-	printf("----- missby=%g, x=%g, ntry=%d\n",missby,x,ntry);
+	//printf("----- missby=%g, x=%g, ntry=%d\n",missby,x,ntry);
 }
 
+bool FixV0(double BE,int nwells,vector<double> &V0,vector<double> &a){
+	double mu=m1*m2/(m1+m2);
+	double x,target,c,s;
+	bool nonodes=true;
+	int iwell,nnodes=0;
+	vector<double> q(nwells+1),KE(nwells+1),A(nwells),B(nwells),psi(nwells),psiprime(nwells);
+
+	for(iwell=0;iwell<nwells;iwell++){
+		KE[iwell]=-BE-V0[iwell];
+		q[iwell]=sqrt(2.0*mu*fabs(KE[iwell]))/HBARC;
+		//printf("iwell=%d, BE=%g, KE=%g, q=%g\n",iwell,BE,KE[iwell],q[iwell]);
+	}
+	
+	psi[nwells-1]=1.0;
+	psiprime[nwells-1]=-sqrt(2.0*mu*BE)/HBARC;
+	for(iwell=nwells-1;iwell>0;iwell--){
+		if(KE[iwell]>0.0){
+			c=cos(q[iwell]*a[iwell]);
+			s=sin(q[iwell]*a[iwell]);
+			A[iwell]=psi[iwell]*c-(psiprime[iwell]/q[iwell])*s;
+			B[iwell]=(psiprime[iwell]/q[iwell])*c+psi[iwell]*s;
+			//printf("A[%d]=%g, B[%d]=%g\n",iwell,A[iwell],iwell,B[iwell]);
+		
+			c=cos(q[iwell]*a[iwell-1]); s=sin(q[iwell]*a[iwell-1]);
+			psi[iwell-1]=A[iwell]*c+B[iwell]*s;
+			psiprime[iwell-1]=q[iwell]*(-A[iwell]*s+B[iwell]*c);
+		}
+		else{
+			c=cosh(q[iwell]*a[iwell]);
+			s=sinh(q[iwell]*a[iwell]);
+			A[iwell]=psi[iwell]*c-(psiprime[iwell]/q[iwell])*s;
+			B[iwell]=(psiprime[iwell]/q[iwell])*c-psi[iwell]*s;
+			//printf("A[%d]=%g, B[%d]=%g\n",iwell,A[iwell],iwell,B[iwell]);
+		
+			c=cosh(q[iwell]*a[iwell-1]); s=sinh(q[iwell]*a[iwell-1]);
+			psi[iwell-1]=A[iwell]*c+B[iwell]*s;
+			psiprime[iwell-1]=q[iwell]*(A[iwell]*s+B[iwell]*c);
+		}
+	}
+	A[0]=0.0;
+	target=psi[0]/(psiprime[0]*a[0]);
+	InvertTanXoverX(target,x);
+	q[0]=x/a[0];
+	if(target>0.0 && target<1.0){
+		KE[0]=-0.5*q[0]*q[0]*HBARC*HBARC/mu;
+		B[0]=psi[0]/sinh(q[0]*a[0]);
+	}
+	else{
+		KE[0]=0.5*q[0]*q[0]*HBARC*HBARC/mu;
+		B[0]=psi[0]/sin(q[0]*a[0]);
+	}
+	V0[0]=-BE-KE[0];
+	//printf("V0=%g, KE0=%g\n",V0[0],KE[0]);
+	
+	double r,delr=0.1,phi,oldphi;
+	oldphi=0.0;
+	for(r=0.5*delr;r<a[nwells-1];r+=delr){
+		iwell=0;
+		while(r>a[iwell])
+			iwell+=1;
+		if(KE[iwell]<0.0){
+			phi=A[iwell]*cosh(q[iwell]*r)+B[iwell]*sinh(q[iwell]*r);
+		}
+		else{
+			phi=A[iwell]*cos(q[iwell]*r)+B[iwell]*sin(q[iwell]*r);
+		}
+		oldphi=phi;
+		if(r>delr && oldphi*phi<0)
+			nnodes+=1;
+		//printf("%6.3f %8.4f\n",r,phi);
+	}
+	if(nnodes>0)
+		nonodes=false;
+
+	return nonodes;
+}
