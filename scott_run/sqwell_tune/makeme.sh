@@ -1,0 +1,2 @@
+#clang++ -O3 -std=c++17 tune_pd_s12.cc -I ${HOME}/git/commonutils/software/include/ -I/usr/local/include/eigen3 -I/usr/local/include/gsl -L /usr/local/lib/ -L ${HOME}/git/commonutils/software/lib -lmsu_commonutils -lgsl -lgslcblas -lmsu_commonutils -o tune_pd_s12
+clang++ -O3 -std=c++17 tune_pd_s32.cc -I ${HOME}/git/commonutils/software/include/ -I/usr/local/include/eigen3 -I/usr/local/include/gsl -L /usr/local/lib/ -L ${HOME}/git/commonutils/software/lib -lmsu_commonutils -lgsl -lgslcblas -lmsu_commonutils -o tune_pd_s32
