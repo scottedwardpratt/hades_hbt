@@ -4,8 +4,15 @@
 
 using namespace std;
 
-int main(){
-	string parsfilename="parameters/coralpars.dat";
+int main(int argc,char *argv[]){
+	string parsfilename;
+	if(argc!=2){
+		printf("Usage hades_hbt_fromGAUSS parameter_file_name\n");
+		exit(1);
+	}
+	else{
+		parsfilename=argv[1];
+	}
 	Chades_hbt_master *hades_hbt_master=new Chades_hbt_master(parsfilename);
 	//hades_hbt_master->ReadOSCAR_1997();
 	hades_hbt_master->ReadOSCAR_2003();
