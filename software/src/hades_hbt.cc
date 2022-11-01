@@ -23,6 +23,9 @@ Chades_hbt_master::Chades_hbt_master(string parsfilename){
 	else if((PIDA==211 && PIDB==211) || (PIDA==-211 && PIDB==-211)){
 		wf=new CWaveFunction_pipluspiplus_sqwell(parsfilename);
 	}
+	else if((abs(PIDA)==2212 && fabs(PIDB)==22122112)){
+		wf=new CWaveFunction_pd_sqwell(parsfilename);
+	}
 	else{
 		CLog::Fatal("Cannot recognize PIDA="+to_string(PIDA)+" or PIDB="+to_string(PIDB)+"\n");
 	}
