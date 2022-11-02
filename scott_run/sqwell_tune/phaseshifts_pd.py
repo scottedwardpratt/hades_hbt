@@ -34,7 +34,7 @@ q=mydata[0]
 ep=mydata[1]
 delta=mydata[2]
 iplot=1
-plt.plot(ep,delta,linestyle='-',linewidth=2,color=colors[iplot],marker=None)
+plt.plot(ep,delta,linestyle='-',linewidth=2,color=colors[iplot],marker=None,label="$S=1/2$")
    
 data_x=[1.0,2.0,3.0]
 data_y=[-4.5,-20.0,-27.5]
@@ -45,7 +45,7 @@ q=mydata[0]
 ep=mydata[1]
 delta=mydata[2]
 iplot=2
-plt.plot(ep,delta,linestyle='-',linewidth=2,color=colors[iplot],marker=None)
+plt.plot(ep,delta,linestyle='-',linewidth=2,color=colors[iplot],marker=None,label="$S=3/2$")
    
 data_x=[1.0,2.0,3.0]
 data_y=[-37.5,-52.5,-64.0]
@@ -71,8 +71,10 @@ plt.ylim(-70,10.0)
 #ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%.1e'))
 ax.yaxis.set_major_formatter(sformatter)
 
+legend(loc="upper right")
+
 plt.xlabel('$E_p$ (MeV)', fontsize=18, weight='normal')
-plt.ylabel('$\delta$ [deg]',fontsize=18,labelpad=-3)
+plt.ylabel('$\delta$ [deg]',fontsize=18,labelpad=0)
 #plt.title('MathText Number $\sum_{n=1}^\infty({-e^{i\pi}}/{2^n})$!',
 #fontsize=12, color='gray')
 #plt.subplots_adjust(top=0.85)
