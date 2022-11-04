@@ -10,8 +10,8 @@ using namespace std;
 
 int NQMAX=40;
 double DELQ=2.0;
-double m1=938.28;
-double m2=2.0*m1-2.224;
+double m1=ProtonMass;
+double m2=ProtonMass+NeutronMass-2.224;
 int Q1Q2=0;
 
 bool InvertTanXoverX(double target,double &x);
@@ -268,7 +268,7 @@ void SquareWell_Init(int ell,int nwells,vector<double> &V0,vector<double> &a,vec
 	
 	iq=0;
 	q=(iq+0.5)*DELQ;
-	scatt_length=(delta[0]/(0.5*DELQ))*HBARC;
+	scatt_length=-(delta[0]/(0.5*DELQ))*HBARC;
 	/*
 	printf("scattering length=%g\n",scatt_length);
 	for(iq=0;iq<NQMAX;iq++){
