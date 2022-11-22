@@ -68,9 +68,11 @@ public:
 
 class Chades_hbt_acceptance{
 public:
+	Crandy *randy;
 	Chades_hbt_acceptance();
 	bool Acceptance(int pid,Chades_hbt_part *part,double &efficiency);
 	double pTmax,pTmin,thetamin,thetamax;
+	void Smear(Chades_hbt_part *part);
 	char message[200];
 };
 
@@ -100,8 +102,21 @@ public:
 		printf("x=(%g,%g,%g,%g)\n",x[0],x[1],x[2],x[3]);
 		printf("mass=%g, p=(%g,%g,%g,%g)\n",p[0],mass,p[1],p[2],p[3]);
 	}
+	int pid;
 	FourVector x;
-	FourVector p;
+	FourVector p; // true momentum
+	FourVector psmear; // smeared momentum, due to resolution
+	double mass;
+	void Setp0(){
+		if(abs(pid)==2112)
+			mass=NeutronMass;
+		else if(abs(pid)==2212)
+			mass=ProtonMass;
+		else if(abs(pid)==211)
+			mass=PionMass;
+		p[0]=sqrt(mass*mass+p[1]*p[1]+p[2]*p[2]+p[3]*p[3]);
+		psmear[0]=sqrt(mass*mass+psmear[1]*psmear[1]+psmear[2]*psmear[2]+psmear[3]*psmear[3]);
+	}
 	char message[200];
 };
 

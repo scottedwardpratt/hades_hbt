@@ -9,13 +9,8 @@ Chades_hbt_master::Chades_hbt_master(string parsfilename){
 	PIDA=parmap.getI("PIDA",211);
 	PIDB=parmap.getI("PIDB",211);
 	if(PIDA==PIDB){
-		char tf[6];
-		sprintf(tf,"true");
-		parmap.set("XYZSYM",tf);
-	}
-	
-	
-	
+		parmap.set("XYZSYM","true");
+	}	
 	
 	if((PIDA==2212 && PIDB==2212) || (PIDA==-2212 && PIDB==-2212)){
 		wf=new CWaveFunction_pp_schrod(parsfilename);
@@ -37,6 +32,7 @@ Chades_hbt_master::Chades_hbt_master(string parsfilename){
 	
 	acceptance=new Chades_hbt_acceptance();
 	randy=new Crandy(-12345);
+	acceptance->randy=randy;
 	
 }
 
@@ -180,7 +176,7 @@ void Chades_hbt_master::IncrementCFs(Chades_hbt_part *parta,Chades_hbt_part *par
 	}
 	
 	double qout,qlong,qside,deleta,dely,delphi;
-	Misc::outsidelong(parta->p,partb->p,q,qout,qside,qlong,deleta,dely,delphi);
+	Misc::outsidelong(parta->psmear,partb->psmear,q,qout,qside,qlong,deleta,dely,delphi);
 	if(fabs(qout)<cfs->Q3DMAX && fabs(qside)<cfs->Q3DMAX && fabs(qlong)<cfs->Q3DMAX){
 		cfs->threed_num->IncrementElement(qout,qlong,qside,weight);
 		cfs->threed_den->IncrementElement(qout,qlong,qside,1.0);

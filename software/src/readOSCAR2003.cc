@@ -62,6 +62,10 @@ void Chades_hbt_master::ReadOSCAR_2003(){
 				if(pdg == PIDA){
 					tmp_particle->p[0]=p0;
 					tmp_particle->p[1]=px; tmp_particle->p[2]=py; tmp_particle->p[3]=pz;
+					tmp_particle->mass=mass;
+					tmp_particle->pid=pdg;
+					acceptance->Smear(tmp_particle);
+					tmp_particle->Setp0();
 					//tmp_particle->x[0]=t;
 					tmp_particle->x[1]=x-(px/p0)*(t-taucompare);
 					tmp_particle->x[2]=y-(py/p0)*(t-taucompare);
@@ -82,8 +86,16 @@ void Chades_hbt_master::ReadOSCAR_2003(){
 					accept=acceptance->Acceptance(pdg, tmp_particle, eff);
 					tmp_particle->p[0]=p0;
 					tmp_particle->p[1]=px; tmp_particle->p[2]=py; tmp_particle->p[3]=pz;
-					tmp_particle->x[0]=t;
-					tmp_particle->x[1]=x; tmp_particle->x[2]=y; tmp_particle->x[3]=z;
+					tmp_particle->mass=mass;
+					tmp_particle->pid=pdg;
+					acceptance->Smear(tmp_particle);
+					tmp_particle->Setp0();
+					tmp_particle->x[1]=x-(px/p0)*(t-taucompare);
+					tmp_particle->x[2]=y-(py/p0)*(t-taucompare);
+					tmp_particle->x[3]=z-(pz/p0)*(t-taucompare);
+					tmp_particle->x[0]=taucompare;
+					
+					accept=acceptance->Acceptance(pdg,tmp_particle, eff);
 					if(accept){
 						cell_list->FindCell(tmp_particle,cell);
 						if(cell!=NULL){
@@ -97,7 +109,7 @@ void Chades_hbt_master::ReadOSCAR_2003(){
 			for(int i = 0; i < 6; i++) f_in >> dust;
 			f_in >> bim;
 			if(bim<BMIN || bim>BMAX){
-				sprintf(message,"bim=%g, but BMIN=%g and BMAX=%g\n",bim,BMIN,BMAX);
+				snprintf(message,strlen(message),"bim=%g, but BMIN=%g and BMAX=%g\n",bim,BMIN,BMAX);
 				CLog::Info(message);
 			}
 			for(int i = 0; i < 2; i++) f_in >> dust;

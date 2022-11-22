@@ -25,11 +25,11 @@ Chades_hbt_CFs::Chades_hbt_CFs(CparameterMap *parmap){
 void Chades_hbt_CFs::PrintC_of_qinv(){
 	int iq;
 	double q;
-	sprintf(message," qinv      CF\n");
+	snprintf(message,strlen(message)," qinv      CF\n");
 	CLog::Info(message);
 	for(iq=0;iq<NQINV;iq++){
 		q=(0.5+iq)*DQINV;
-		sprintf(message,"%5.1f %8.5g  %d\n",q,C_of_qinv[iq]/denom_of_qinv[iq],denom_of_qinv[iq]);
+		snprintf(message,strlen(message),"%5.1f %8.5g  %d\n",q,C_of_qinv[iq]/denom_of_qinv[iq],denom_of_qinv[iq]);
 		CLog::Info(message);
 	}
 }

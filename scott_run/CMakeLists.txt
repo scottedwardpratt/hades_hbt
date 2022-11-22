@@ -20,9 +20,6 @@ find_library(${GITHOME_MSU}/coral/software/lib msu_coral)
 find_library(${GITHOME_MSU}/commonutils/software/lib msu_commonutils)
 find_library(${GITHOME_MSU}/hades_hbt/software/lib hades_hbt)
 
-
-
-
 set(SOURCE_FILES ./hades_hbt_fromOSCAR.cc)
 add_executable(hades_hbt_fromOSCAR ${SOURCE_FILES})
 SET_SOURCE_FILES_PROPERTIES(
@@ -37,8 +34,6 @@ SET_SOURCE_FILES_PROPERTIES(
 )
 add_dependencies(hades_hbt_fromOSCAR extern_hades_hbt extern_msu_coral extern_msu_commonutils)
 target_link_libraries(hades_hbt_fromOSCAR hades_hbt msu_commonutils msu_coral ${GITHOME_MSU}/commonutils/software/lib/libmsu_commonutils.a ${GITHOME_MSU}/coral/software/lib/libmsu_coral.a ${GITHOME_MSU}/hades_hbt/software/lib/libhades_hbt.a ${GSL_LIBRARY} ${GSL_CBLAS_LIBRARY} ${EIGEN3_LIBRARY})
-
-
 
 
 set(SOURCE_FILES ./hades_hbt_fromGAUSS.cc)
