@@ -48,6 +48,7 @@ void Chades_hbt_master::CalcCFs(){
 	Chades_hbt_part *parta,*partb;
 	printf("calculating CFs\n");
 	for(icx=0;icx<cell_list->NRAPX;icx++){
+		printf("icx=%d out of NRAPX=%d\n",icx,cell_list->NRAPX);
 		for(icy=0;icy<cell_list->NRAPY;icy++){
 			for(icz=0;icz<cell_list->NRAPZ;icz++){
 				cella=cell_list->cell[icx][icy][icz];

@@ -20,9 +20,12 @@ void Chades_hbt_master::ReadOSCAR_1997(){
 	FILE *fptr_in;
 
 	double t, x, y, z, mass, p0, px, py, pz, bim, dumbo;
-	int pid,pdg,nparts=0;
+	int pid,pdg;
+	long long naccept=0;
 	int nrParticlesInEvent,tracknumber=0;
 	int nr_event;
+	int ifile=0,nfilesmax;
+	nfilesmax=parmap.getI("OSCAR_NFILESMAX",999999);
 
 	list<string> oscar_filenames;
 	list<string>::iterator fiter;
@@ -33,7 +36,8 @@ void Chades_hbt_master::ReadOSCAR_1997(){
 		fscanf(fptr_filenames,"%s",dummy);
 		filename=dummy;
 		oscar_filenames.push_back(filename);
-	}while(!feof(fptr_filenames));
+		ifile+=1;
+	}while(!feof(fptr_filenames) && ifile<nfilesmax);
 	fclose(fptr_filenames);
 
 	for(fiter=oscar_filenames.begin();fiter!=oscar_filenames.end();++fiter){
@@ -79,7 +83,7 @@ void Chades_hbt_master::ReadOSCAR_1997(){
 								if(cell!=NULL){
 									cell->partlist_a.push_back(tmp_particle);
 									tmp_particle=new Chades_hbt_part;
-									nparts+=1;
+									naccept+=1;
 								}
 							}
 						}
@@ -100,7 +104,7 @@ void Chades_hbt_master::ReadOSCAR_1997(){
 								if(cell!=NULL){
 									cell->partlist_b.push_back(tmp_particle);
 									tmp_particle=new Chades_hbt_part;
-									nparts+=1;
+									naccept+=1;
 								}
 							}
 						}
@@ -110,8 +114,7 @@ void Chades_hbt_master::ReadOSCAR_1997(){
 			}
 		}while(!feof(fptr_in));
 		fclose(fptr_in);
-		CLog::Info("readOSCAR: read in "+to_string(nparts)+" parts\n");
+		CLog::Info("readOSCAR: Naccept="+to_string(naccept)+"\n");
 	}//end of loop over files
 	delete tmp_particle;
-	cout << "Im here, in the end of read OSCAR97" << endl;
 }

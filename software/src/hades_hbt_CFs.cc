@@ -25,11 +25,11 @@ Chades_hbt_CFs::Chades_hbt_CFs(CparameterMap *parmap){
 void Chades_hbt_CFs::PrintC_of_qinv(){
 	int iq;
 	double q;
-	snprintf(message,strlen(message)," qinv      CF\n");
+	snprintf(message,sizeof(message)," qinv      CF\n");
 	CLog::Info(message);
 	for(iq=0;iq<NQINV;iq++){
 		q=(0.5+iq)*DQINV;
-		snprintf(message,strlen(message),"%5.1f %8.5g  %d\n",q,C_of_qinv[iq]/denom_of_qinv[iq],denom_of_qinv[iq]);
+		snprintf(message,sizeof(message),"%5.1f %8.5g  %d\n",q,C_of_qinv[iq]/denom_of_qinv[iq],denom_of_qinv[iq]);
 		CLog::Info(message);
 	}
 }
@@ -49,7 +49,7 @@ void Chades_hbt_CFs::WriteC_of_qinv(string filename){
 void Chades_hbt_CFs::WriteC3D(string dirname){
 	threed_num->DivideByArray(threed_den);
 	threed_num->WriteArray(dirname);
-	dirname=dirname+"_count";
+	//dirname=dirname+"_count";
 	threed_den->WriteArray(dirname);
 
 }
