@@ -157,7 +157,6 @@ void Chades_hbt_master::IncrementCFs(Chades_hbt_part *parta,Chades_hbt_part *par
 	wf->getqrctheta(parta->p,parta->x,partb->p,partb->x,q,r,ctheta);
 	
 	if(r>1.0E-8){
-	
 		if(q<cell_list->QMAX){
 			nsuccess+=1;		
 			if(q<cfs->DQINV*cfs->NQINV){
@@ -172,9 +171,7 @@ void Chades_hbt_master::IncrementCFs(Chades_hbt_part *parta,Chades_hbt_part *par
 	}
 	
 	double qout,qlong,qside,deleta,dely,delphi;
-	printf("---------\nBefore qinv=%g\n",q);
 	Misc::outsidelong(parta->psmear,partb->psmear,q,qout,qside,qlong,deleta,dely,delphi);
-	printf("after:  qinv=%g\n",q);
 	if(fabs(qout)<cfs->Q3DMAX && fabs(qside)<cfs->Q3DMAX && fabs(qlong)<cfs->Q3DMAX){
 		cfs->threed_num->IncrementElement(qout,qlong,qside,weight);
 		cfs->threed_den->IncrementElement(qout,qlong,qside,1.0);
