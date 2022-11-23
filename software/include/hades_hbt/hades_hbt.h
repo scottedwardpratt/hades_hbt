@@ -100,7 +100,8 @@ public:
 	void Print(){
 		double mass=sqrt(p[0]*p[0]-p[1]*p[1]-p[2]*p[2]-p[3]*p[3]);
 		printf("x=(%g,%g,%g,%g)\n",x[0],x[1],x[2],x[3]);
-		printf("mass=%g, p=(%g,%g,%g,%g)\n",p[0],mass,p[1],p[2],p[3]);
+		printf("mass=%g, p=(%g,%g,%g,%g)\n",mass,p[0],p[1],p[2],p[3]);
+		printf("psmear=(%g,%g,%g,%g)\n",psmear[0],psmear[1],psmear[2],psmear[3]);
 	}
 	int pid;
 	FourVector x;

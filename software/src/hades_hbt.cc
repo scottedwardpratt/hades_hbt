@@ -167,20 +167,22 @@ void Chades_hbt_master::IncrementCFs(Chades_hbt_part *parta,Chades_hbt_part *par
 					partb->Print();
 					CLog::Fatal("weight=Nan\n");
 				}
-				iq=lrint(floor(q/cfs->DQINV));
-				if(iq<int(cfs->C_of_qinv.size())){
-					cfs->C_of_qinv[iq]+=weight;
-					cfs->denom_of_qinv[iq]+=1;
-				}
 			}
 		}
 	}
 	
 	double qout,qlong,qside,deleta,dely,delphi;
+	printf("---------\nBefore qinv=%g\n",q);
 	Misc::outsidelong(parta->psmear,partb->psmear,q,qout,qside,qlong,deleta,dely,delphi);
+	printf("after:  qinv=%g\n",q);
 	if(fabs(qout)<cfs->Q3DMAX && fabs(qside)<cfs->Q3DMAX && fabs(qlong)<cfs->Q3DMAX){
 		cfs->threed_num->IncrementElement(qout,qlong,qside,weight);
 		cfs->threed_den->IncrementElement(qout,qlong,qside,1.0);
+	}
+	iq=lrint(floor(q/cfs->DQINV));
+	if(iq<int(cfs->C_of_qinv.size())){
+		cfs->C_of_qinv[iq]+=weight;
+		cfs->denom_of_qinv[iq]+=1;
 	}
 	
 }
