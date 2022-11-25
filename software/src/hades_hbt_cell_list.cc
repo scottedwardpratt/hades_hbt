@@ -71,7 +71,7 @@ Chades_hbt_cell_list::Chades_hbt_cell_list(CparameterMap *parmap){
 
 void Chades_hbt_cell_list::FindCell(Chades_hbt_part *part,Chades_hbt_cell *&cellptr){
 	double px=part->psmear[1],py=part->psmear[2],pz=part->psmear[3];
-	double E=part->psmiar[0];
+	double E=part->psmear[0];
 	double mass=sqrt(E*E-px*px-py*py-pz*pz);
 	double rapx=asinh(px/sqrt(mass*mass+py*py+pz*pz));
 	double rapy=asinh(py/sqrt(mass*mass+px*px+pz*pz));
