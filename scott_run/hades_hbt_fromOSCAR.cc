@@ -19,7 +19,6 @@ int main(int argc,char *argv[]){
 	hades_hbt_master->CalcCFs();
 	hades_hbt_master->cfs->PrintC_of_qinv();
 	hades_hbt_master->cfs->WriteC_of_qinv("qinv_output/qinv.txt");
-	printf("check in\n");
 	hades_hbt_master->cfs->WriteC3D("threed_output");
 	return 0;
 }
