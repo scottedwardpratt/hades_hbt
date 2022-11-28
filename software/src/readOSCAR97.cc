@@ -12,7 +12,6 @@ void Chades_hbt_master::ReadOSCAR_1997(){
 	Chades_hbt_part *tmp_particle=new Chades_hbt_part();
 	//double taucompare=parmap.getD("OSCAR_TAUCOMPRE",25.0);
 	string filenamefilenames=parmap.getS("OSCAR_FILENAME_FILENAMES","oscarfilenames_URQMD.txt");
-	bool success;
 	double BMIN=parmap.getD("OSCAR_BMIN",4.0);
 	double BMAX=parmap.getD("OSCAR_BMAX",4.6);
 
@@ -55,7 +54,6 @@ void Chades_hbt_master::ReadOSCAR_1997(){
 				for(int i = 1; i <= nrParticlesInEvent; i++){//reading particles in event loop
 					fscanf(fptr_in,"%d %d  %lf %lf %lf %lf  %lf  %lf %lf %lf %lf",&tracknumber,&pid,&px,&py,&pz,&p0,&mass,&x,&y,&z,&t);
 					fgets(dummy,200,fptr_in);
-					success=false;
 					if(i!=tracknumber){
 						CLog::Info("Warning for file "+filename+", tracknumber suspicious\n");
 						CLog::Info("nr_event="+to_string(nr_event)+",tracknumber="+to_string(tracknumber)+"\n");
@@ -104,7 +102,6 @@ void Chades_hbt_master::ReadOSCAR_1997(){
 							if(accept){
 								cell_list->FindCell(tmp_particle,cell);
 								if(cell!=NULL){
-									success=true;
 									if(pdg==PIDA)
 										cell->partlist_a.push_back(tmp_particle);
 									else
@@ -122,6 +119,5 @@ void Chades_hbt_master::ReadOSCAR_1997(){
 		fclose(fptr_in);
 	}//end of loop over files
 	CLog::Info("readOSCAR: Naccept="+to_string(naccept)+"\n");
-	if(success==false)
-		delete tmp_particle;
+	delete tmp_particle;
 }
