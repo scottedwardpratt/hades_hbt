@@ -12,7 +12,7 @@ void Chades_hbt_master::ReadOSCAR_1997(){
 	Chades_hbt_part *tmp_particle=new Chades_hbt_part();
 	//double taucompare=parmap.getD("OSCAR_TAUCOMPRE",25.0);
 	string filenamefilenames=parmap.getS("OSCAR_FILENAME_FILENAMES","oscarfilenames_URQMD.txt");
-
+	bool success;
 	double BMIN=parmap.getD("OSCAR_BMIN",4.0);
 	double BMAX=parmap.getD("OSCAR_BMAX",4.6);
 
@@ -55,6 +55,7 @@ void Chades_hbt_master::ReadOSCAR_1997(){
 				for(int i = 1; i <= nrParticlesInEvent; i++){//reading particles in event loop
 					fscanf(fptr_in,"%d %d  %lf %lf %lf %lf  %lf  %lf %lf %lf %lf",&tracknumber,&pid,&px,&py,&pz,&p0,&mass,&x,&y,&z,&t);
 					fgets(dummy,200,fptr_in);
+					success=false;
 					if(i!=tracknumber){
 						CLog::Info("Warning for file "+filename+", tracknumber suspicious\n");
 						CLog::Info("nr_event="+to_string(nr_event)+",tracknumber="+to_string(tracknumber)+"\n");
@@ -64,8 +65,30 @@ void Chades_hbt_master::ReadOSCAR_1997(){
 						mass*=1000.0; p0*=1000.0; px*=1000.0; py*=1000.0; pz*=1000.0;
 						p0=sqrt(mass*mass+px*px+py*py+pz*pz);
 						pdg = pid;
+						
+	
+						
+						
 						bool accept; double eff;
-						if(pdg == PIDA){
+						if(pdg == PIDA || pdg==PIDB){
+							//printf("m=%g, p=(%g,%g,%g,%g), r=(%g,%g,%g,%g)\n",mass,p0,px,py,pz,t,x,y,z);
+							
+							/* For testing
+							double Rg=2.7,pdotr,psquared,gamma;
+							x=Rg*randy->ran_gauss();
+							y=Rg*randy->ran_gauss();
+							z=Rg*randy->ran_gauss();
+							t=0.0;
+							psquared=px*px+py*py+pz*pz;
+							pdotr=px*x+py*y+pz*z;
+							p0=sqrt(psquared+mass*mass);
+							gamma=p0/mass;
+							x=x-px*pdotr*(1.0-1.0/gamma)/psquared;
+							y=y-py*pdotr*(1.0-1.0/gamma)/psquared;
+							z=z-pz*pdotr*(1.0-1.0/gamma)/psquared;
+							*/		
+							
+							
 							tmp_particle->p[1]=px;
 							tmp_particle->p[2]=py;
 							tmp_particle->p[3]=pz;
@@ -75,33 +98,17 @@ void Chades_hbt_master::ReadOSCAR_1997(){
 							tmp_particle->x[1]=x;//-(px/p0)*(t-taucompare);
 							tmp_particle->x[2]=y;//-(py/p0)*(t-taucompare);
 							tmp_particle->x[3]=z;//-(pz/p0)*(t-taucompare);
-							tmp_particle->x[0]=t;//taucompare;
+							tmp_particle->x[0]=t;//taucompare;				
+							
 							accept=acceptance->Acceptance(pdg,tmp_particle, eff);
 							if(accept){
 								cell_list->FindCell(tmp_particle,cell);
 								if(cell!=NULL){
-									cell->partlist_a.push_back(tmp_particle);
-									tmp_particle=new Chades_hbt_part;
-									naccept+=1;
-								}
-							}
-						}
-						else if(pdg == PIDB ){
-							tmp_particle->p[1]=px;
-							tmp_particle->p[2]=py;
-							tmp_particle->p[3]=pz;
-							tmp_particle->pid=pdg;
-							acceptance->Smear(tmp_particle);
-							tmp_particle->Setp0();
-							tmp_particle->x[1]=x;
-							tmp_particle->x[2]=y;
-							tmp_particle->x[3]=z;
-							tmp_particle->x[0]=t;
-							accept=acceptance->Acceptance(pdg, tmp_particle, eff);
-							if(accept){
-								cell_list->FindCell(tmp_particle,cell);
-								if(cell!=NULL){
-									cell->partlist_b.push_back(tmp_particle);
+									success=true;
+									if(pdg==PIDA)
+										cell->partlist_a.push_back(tmp_particle);
+									else
+										cell->partlist_b.push_back(tmp_particle);
 									tmp_particle=new Chades_hbt_part;
 									naccept+=1;
 								}
@@ -113,7 +120,8 @@ void Chades_hbt_master::ReadOSCAR_1997(){
 			}
 		}while(!feof(fptr_in));
 		fclose(fptr_in);
-		CLog::Info("readOSCAR: Naccept="+to_string(naccept)+"\n");
 	}//end of loop over files
-	delete tmp_particle;
+	CLog::Info("readOSCAR: Naccept="+to_string(naccept)+"\n");
+	if(success==false)
+		delete tmp_particle;
 }

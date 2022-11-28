@@ -97,7 +97,7 @@ void Chades_hbt_master::CalcCFs(){
 }
 
 void Chades_hbt_master::CalcCFs_Gaussian(double Rx,double Ry,double Rz){
-	double x,y,z,qx,qy,qz,q,r,ctheta,weight;
+	double x,y,z,qx,qy,qz,q,r,ctheta,weight,root2=sqrt(2.0);
 	int imc,NMC=parmap.getI("NMC_GAUSSIAN",1000);
 	int iq,iqx,iqy,iqz,isx,isy,isz,nsx=2,nsy=2,nsz=2;
 	if(cfs->XSYM)
@@ -126,9 +126,9 @@ void Chades_hbt_master::CalcCFs_Gaussian(double Rx,double Ry,double Rz){
 								weight=1.0;
 								if(q<cell_list->QMAX){
 									if(q<cfs->DQINV*cfs->NQINV){
-										x=Rx*randy->ran_gauss();
-										y=Ry*randy->ran_gauss();
-										z=Rz*randy->ran_gauss();
+										x=root2*Rx*randy->ran_gauss();
+										y=root2*Ry*randy->ran_gauss();
+										z=root2*Rz*randy->ran_gauss();
 										r=sqrt(x*x+y*y+z*z);
 										ctheta=(qx*x+qy*y+qz*z)/(q*r);
 										weight=wf->GetPsiSquared(q,r,ctheta);

@@ -42,9 +42,10 @@ bool Chades_hbt_acceptance::Acceptance(int pid, Chades_hbt_part *part, double &e
 
 void Chades_hbt_acceptance::Smear(Chades_hbt_part *part){
 	double sigmap1,sigmap2,sigmap3;
-	sigmap1=5.0+fabs(part->p[1]*0.01);
-	sigmap2=5.0+fabs(part->p[2]*0.01);
-	sigmap3=5.0+fabs(part->p[3]*0.01);
+	sigmap1=10.0+fabs(part->p[1]*0.02);
+	sigmap2=10.0+fabs(part->p[2]*0.02);
+	sigmap3=10.0+fabs(part->p[3]*0.02);
+	//sigmap1=sigmap2=sigmap3=0.0;
 	part->psmear[1]=part->p[1]+sigmap1*randy->ran_gauss();
 	part->psmear[2]=part->p[2]+sigmap2*randy->ran_gauss();
 	part->psmear[3]=part->p[3]+sigmap3*randy->ran_gauss();
