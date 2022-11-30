@@ -44,7 +44,7 @@ int main(int argc,char *argv[]){
 	a[1]=atof(argv[5]);
 	a[2]=atof(argv[6]);*/
 	
-	for(int itry=0;itry<1000000;itry++){
+	for(int itry=0;itry<10000;itry++){
 		if(itry<100000){
 			V0[0]=100.0*randy.ran();
 			a[0]=0.2+3.5*randy.ran();
@@ -87,7 +87,8 @@ int main(int argc,char *argv[]){
 		}
 	}
 
-	
+	NQMAX*=2;
+	delta.resize(NQMAX);
 	SquareWell_Init(ell,nwells,V0best,abest,delta,scatt_length);
 	printf("# abest    V0best\n");
 	for(iwell=0;iwell<nwells;iwell++){
@@ -108,7 +109,6 @@ int main(int argc,char *argv[]){
 
 void SquareWell_Init(int ell,int nwells,vector<double> &V0,vector<double> &a,vector<double> &delta,double &scatt_length){
 	// To set up the wave functions and phase shifts
-	int nqmax=40;
 	
 	CGSLMatrix_Complex *cmatrix;
 	double q,mu_coulomb,E,mu;

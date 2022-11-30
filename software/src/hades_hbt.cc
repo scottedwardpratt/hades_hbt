@@ -109,7 +109,10 @@ void Chades_hbt_master::CalcCFs(){
 		+to_string(2.0*double(nincrement)/(double(natot)*double(natot-1)))+"\n");//, nwf/nincrement="+to_string(double(nsuccess)/double(nincrement));
 }
 
-void Chades_hbt_master::CalcCFs_Gaussian(double Rx,double Ry,double Rz){
+void Chades_hbt_master::CalcCFs_Gaussian(){
+	double Rx=parmap.getD("HADES_RX",3.0);
+	double Ry=parmap.getD("HADES_RY",3.0);
+	double Rz=parmap.getD("HADES_RZ",3.0);
 	double x,y,z,qx,qy,qz,q,r,ctheta,weight,root2=sqrt(2.0);
 	int imc,NMC=parmap.getI("NMC_GAUSSIAN",1000);
 	int iq,iqx,iqy,iqz,isx,isy,isz,nsx=2,nsy=2,nsz=2;

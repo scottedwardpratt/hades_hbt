@@ -31,7 +31,7 @@ public:
 	Chades_hbt_acceptance *acceptance;
 	void IncrementCFs(Chades_hbt_part *parta,Chades_hbt_part *partb);
 	void CalcCFs();
-	void CalcCFs_Gaussian(double Rx,double Ry,double Rz);
+	void CalcCFs_Gaussian();
 	Chades_hbt_cell_list *cell_list;
 	Chades_hbt_CFs *cfs;
 	int nincrement,nsuccess;
