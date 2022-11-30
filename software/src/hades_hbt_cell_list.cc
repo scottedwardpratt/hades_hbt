@@ -12,12 +12,12 @@ Chades_hbt_cell_list::Chades_hbt_cell_list(CparameterMap *parmap){
 	double mb=master->wf->m2;
 	double mu=ma*mb/(ma+mb);
 	DRAPX=DRAPY=DRAPZ=QMAX/mu;
-	double PXMAXa=parmap->getD("PXMAXA",1000.0);
-	double PYMAXa=parmap->getD("PYMAXA",1000.0);
-	double PZMAXa=parmap->getD("PZMAXA",2000.0);
-	double PXMAXb=parmap->getD("PXMAXB",1000.0);
-	double PYMAXb=parmap->getD("PYMAXB",1000.0);
-	double PZMAXb=parmap->getD("PZMAXB",2000.0);
+	double PXMAXa=parmap->getD("HADES_PXMAXA",1000.0);
+	double PYMAXa=parmap->getD("HADES_PYMAXA",1000.0);
+	double PZMAXa=parmap->getD("HADES_PZMAXA",2000.0);
+	double PXMAXb=parmap->getD("HADES_PXMAXB",1000.0);
+	double PYMAXb=parmap->getD("HADES_PYMAXB",1000.0);
+	double PZMAXb=parmap->getD("HADES_PZMAXB",2000.0);
 	if(PXMAXa/ma > PXMAXb/mb)
 		rapxmax=asinh(PXMAXb/mb);
 	else

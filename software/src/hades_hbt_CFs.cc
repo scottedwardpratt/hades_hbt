@@ -1,15 +1,17 @@
 #include "hades_hbt/hades_hbt.h"
 using namespace std;
 
+Chades_hbt_master *Chades_hbt_CFs::master=NULL;
+
 Chades_hbt_CFs::Chades_hbt_CFs(CparameterMap *parmap){
-	NQINV=parmap->getI("NQMAX",80);
-	DQINV=parmap->getI("DQINV",1.0);
+	NQINV=parmap->getI("HADES_NQINV",80);
+	DQINV=parmap->getI("HADES_DELQINV",1.0);
 	C_of_qinv.resize(NQINV);
 	denom_of_qinv.resize(NQINV);
 	
 	// Instantiate 3D array
-	NQ3D=parmap->getI("NQ3DARRAY",20);
-	DELQ3D=parmap->getD("DELQ3D",4);
+	NQ3D=parmap->getI("HADES_NQ3DARRAY",20);
+	DELQ3D=parmap->getD("HADES_DELQ3D",4);
 	Q3DMAX=NQ3D*DELQ3D;
 	XSYM=YSYM=ZSYM=parmap->getB("XYZSYM",false);
 	XSYM=parmap->getB("XSYM",XSYM);
@@ -34,7 +36,11 @@ void Chades_hbt_CFs::PrintC_of_qinv(){
 	}
 }
 
-void Chades_hbt_CFs::WriteC_of_qinv(string filename){
+void Chades_hbt_CFs::WriteC_of_qinv(){
+	string dirname="results/"+master->parsfilename_prefix;
+	string command="mkdir -p "+dirname;
+	system(command.c_str());
+	string filename=dirname+"/"+"qinv.txt";
 	int iq;
 	double q;
 	FILE *fptr=fopen(filename.c_str(),"w");
@@ -46,10 +52,16 @@ void Chades_hbt_CFs::WriteC_of_qinv(string filename){
 	fclose(fptr);
 }
 
-void Chades_hbt_CFs::WriteC3D(string dirname){
+void Chades_hbt_CFs::WriteC3D(){
+	string dirname="results/"+master->parsfilename_prefix;
+	string command="mkdir -p "+dirname;
+	system(command.c_str());
+	
 	threed_num->DivideByArray(threed_den);
 	threed_num->WriteArray(dirname);
-	//dirname=dirname+"_count";
+	dirname=dirname+"_count";
+	command="mkdir -p "+dirname;
+	system(command.c_str());
 	threed_den->WriteArray(dirname);
 
 }

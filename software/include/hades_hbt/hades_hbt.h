@@ -5,6 +5,7 @@
 #include "msu_commonutils/commondefs.h"
 #include "msu_commonutils/parametermap.h"
 #include "msu_coral/coral.h"
+#include "hades_acceptance.h"
 
 using namespace std;
 
@@ -18,8 +19,10 @@ class Chades_hbt_acceptance;
 
 class Chades_hbt_master{
 public:
-	Chades_hbt_master(string parsfilename);
+	string parsfilename_prefix;
+	Chades_hbt_master(string parmapfilename_prefix);
 	int PIDA,PIDB;
+	bool HADES_GAUSS;
 	CparameterMap parmap;
 	void ReadOSCAR_1997();
 	void ReadOSCAR_2003();
@@ -66,16 +69,6 @@ public:
 	double massa,massb;
 };
 
-class Chades_hbt_acceptance{
-public:
-	Crandy *randy;
-	Chades_hbt_acceptance();
-	bool Acceptance(int pid,Chades_hbt_part *part,double &efficiency);
-	double pTmax,pTmin,thetamin,thetamax;
-	void Smear(Chades_hbt_part *part);
-	char message[200];
-};
-
 class Chades_hbt_CFs{
 public:
 	Chades_hbt_CFs(CparameterMap *parmap);
@@ -84,13 +77,14 @@ public:
 	vector<double> C_of_qinv;
 	vector<int> denom_of_qinv;
 	void PrintC_of_qinv();
-	void WriteC_of_qinv(string filename);
-	void WriteC3D(string dirname);
+	void WriteC_of_qinv();
+	void WriteC3D();
 	bool XSYM,YSYM,ZSYM;
 	
 	C3DArray *threed_num,*threed_den;
 	double Q3DMAX,DELQ3D;
 	int NQ3D;
+	static Chades_hbt_master *master;
 	
 	char message[200];
 };

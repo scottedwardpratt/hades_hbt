@@ -1,25 +1,28 @@
 #include "hades_hbt/hades_hbt.h"
 
-Chades_hbt_master::Chades_hbt_master(string parsfilename){
-	parmap.ReadParsFromFile(parsfilename);	
-	string filename=parmap.getS("LOG_FILENAME","log.txt");
-	CLog::Init(filename);
-	
-	CLog::Info("parsfilename="+parsfilename+"\n");
+Chades_hbt_master::Chades_hbt_master(string parsfilename_prefix_set){
+	parsfilename_prefix=parsfilename_prefix_set;
+	string parsfilename="parameters/"+parsfilename_prefix+".txt";
+	parmap.ReadParsFromFile(parsfilename);
+	string logfilename=parmap.getS("LOG_FILENAME","log.txt");
+	string coralpars_filename=parmap.getS("CORALPARS_FILENAME","parameters/coralpars.txt");
+	parmap.ReadParsFromFile(coralpars_filename);
+	CLog::Init(logfilename);
 	PIDA=parmap.getI("PIDA",211);
 	PIDB=parmap.getI("PIDB",211);
+	HADES_GAUSS=parmap.getB("HADES_GAUSS",false);
 	if(PIDA==PIDB){
 		parmap.set("XYZSYM","true");
 	}	
 	
 	if((PIDA==2212 && PIDB==2212) || (PIDA==-2212 && PIDB==-2212)){
-		wf=new CWaveFunction_pp_schrod(parsfilename);
+		wf=new CWaveFunction_pp_schrod(coralpars_filename);
 	}
 	else if((PIDA==211 && PIDB==211) || (PIDA==-211 && PIDB==-211)){
-		wf=new CWaveFunction_pipluspiplus_sqwell(parsfilename);
+		wf=new CWaveFunction_pipluspiplus_sqwell(coralpars_filename);
 	}
 	else if((abs(PIDA)==2212 && fabs(PIDB)==22122112)){
-		wf=new CWaveFunction_pd_sqwell(parsfilename);
+		wf=new CWaveFunction_pd_sqwell(coralpars_filename);
 	}
 	else{
 		CLog::Fatal("Cannot recognize PIDA="+to_string(PIDA)+" or PIDB="+to_string(PIDB)+"\n");
@@ -29,8 +32,18 @@ Chades_hbt_master::Chades_hbt_master(string parsfilename){
 	cell_list=new Chades_hbt_cell_list(&parmap);
 	
 	cfs=new Chades_hbt_CFs(&parmap);
+	cfs->master=this;
 	
-	acceptance=new Chades_hbt_acceptance();
+	string smearstring=parmap.getS("HADES_HBT_SMEARSTRING","smear");
+	if(smearstring=="smear"){
+		acceptance=new Chades_hbt_acceptance_smear(&parmap);
+	}
+	else if(smearstring=="nosmear"){
+		acceptance=new Chades_hbt_acceptance_nosmear(&parmap);
+	}
+	else{
+		CLog::Fatal("smearstring="+smearstring+" is not recognized\n");
+	}
 	randy=new Crandy(-12345);
 	acceptance->randy=randy;
 	
