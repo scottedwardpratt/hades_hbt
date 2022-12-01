@@ -12,8 +12,8 @@ void Chades_hbt_acceptance::Init(CparameterMap *parmap){
 	ymax=parmap->getD("HADES_ACCEPTANCE_YMAX",5.0);
 	
 	double ebeam=master->parmap.getD("HADES_BEAM_ENERGY_GEV",1.26); // KE of beam in lab frame per nucleon
-	int Abeam=master->parmap.getD("HADES_BEAM_A",197);
-	int Atarget=master->parmap.getD("HADES_TARGET_A",197);
+	int Abeam=master->parmap.getI("HADES_BEAM_A",197);
+	int Atarget=master->parmap.getI("HADES_TARGET_A",197);
 	double m=0.931,Mtarget,Mbeam,roots,Pbeam,Ebeam;   // roughly account for binding energy
 	Mbeam=Abeam*m;
 	Mtarget=Atarget*m;

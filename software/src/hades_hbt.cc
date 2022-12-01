@@ -12,7 +12,7 @@ Chades_hbt_master::Chades_hbt_master(string parsfilename_prefix_set){
 	PIDB=parmap.getI("PIDB",211);
 	HADES_GAUSS=parmap.getB("HADES_GAUSS",false);
 	if(PIDA==PIDB){
-		parmap.set("XYZSYM","true");
+		parmap.set("XYZSYM",true);
 	}	
 	
 	if((PIDA==2212 && PIDB==2212) || (PIDA==-2212 && PIDB==-2212)){
@@ -31,9 +31,10 @@ Chades_hbt_master::Chades_hbt_master(string parsfilename_prefix_set){
 	Chades_hbt_cell_list::master=this;
 	cell_list=new Chades_hbt_cell_list(&parmap);
 	
-	cfs=new Chades_hbt_CFs(&parmap);
 	Chades_hbt_CFs::master=this;
+	cfs=new Chades_hbt_CFs(&parmap);
 	
+	Chades_hbt_acceptance::master=this;
 	string smearstring=parmap.getS("HADES_HBT_SMEARSTRING","smear");
 	if(smearstring=="smear"){
 		acceptance=new Chades_hbt_acceptance_smear(&parmap);
@@ -44,7 +45,7 @@ Chades_hbt_master::Chades_hbt_master(string parsfilename_prefix_set){
 	else{
 		CLog::Fatal("smearstring="+smearstring+" is not recognized\n");
 	}
-	Chades_hbt_acceptance::master=this;
+	
 	randy=new Crandy(-12345);
 	acceptance->randy=randy;
 	
