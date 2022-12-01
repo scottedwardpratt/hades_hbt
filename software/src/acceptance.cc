@@ -65,9 +65,9 @@ void Chades_hbt_acceptance_smear::Smear(Chades_hbt_part *part){
 	FourVector plab;
 	Misc::Boost(ucm,part->p,plab);
 	
-	sigmap1=10.0+fabs(part->p[1]*0.02);
-	sigmap2=10.0+fabs(part->p[2]*0.02);
-	sigmap3=10.0+fabs(part->p[3]*0.02);
+	sigmap1=10.0+fabs(plab[1]*0.02);
+	sigmap2=10.0+fabs(plab[2]*0.02);
+	sigmap3=10.0+fabs(plab[3]*0.02);
 	plab[1]=plab[1]+sigmap1*randy->ran_gauss();
 	plab[2]=plab[2]+sigmap2*randy->ran_gauss();
 	plab[3]=plab[3]+sigmap3*randy->ran_gauss();
