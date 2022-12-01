@@ -1,0 +1,22 @@
+int NMC	1000000
+int NMC_GAUSSIAN 100
+int NQMAX 80
+double DQINV 2.0
+double DELQ 2.0
+double EPSILON 0.5
+int KLMAX 6
+bool IDENTICAL false
+double DELR 0.1
+int NRMAX 100
+bool IDENTICAL true
+int PIDA 2212
+int PIDB 22122112
+double DELQ3D 4
+int NQ3DARRAY 40
+#string OSCAR_FILENAME_FILENAMES oscarfilenames_URQMD.txt
+string OSCAR_FILENAME_FILENAMES oscarfilenames_SMASH.txt
+#double OSCAR_BMIN 4.5
+#double OSCAR_BMAX 4.6
+
+bool LOG_FILENAME INTERACTIVE
+#bool LOG_FILENAME coral_output.txt

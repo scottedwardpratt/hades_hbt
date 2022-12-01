@@ -1,0 +1,23 @@
+int NMC	100000
+#
+double HADES_DELQ3D 4.0
+int HADES_NQ3DARRAY 20
+double HADES_DELQINV 1.0;
+int HADES_NQINV 80
+#
+string CORALPARS_FILENAME parameters/coralpars_pp.txt
+#
+string OSCAR_FILENAME_FILENAMES oscarfilenames_URQMD.txt
+int OSCAR_NFILESMAX 100
+#string OSCAR_FILENAME_FILENAMES oscarfilenames_SMASH.txt
+double OSCAR_BMIN 3.75
+double OSCAR_BMAX 3.9
+#
+bool LOG_FILENAME INTERACTIVE
+#bool LOG_FILENAME hbt_fromOSCAR_output.txt
+#
+#string HADES_HBT_SMEARSTRING smear
+string HADES_HBT_SMEARSTRING nosmear
+#
+bool HADES_GAUSS false
+#
