@@ -32,7 +32,7 @@ Chades_hbt_master::Chades_hbt_master(string parsfilename_prefix_set){
 	cell_list=new Chades_hbt_cell_list(&parmap);
 	
 	cfs=new Chades_hbt_CFs(&parmap);
-	cfs->master=this;
+	Chades_hbt_CFs::master=this;
 	
 	string smearstring=parmap.getS("HADES_HBT_SMEARSTRING","smear");
 	if(smearstring=="smear"){
@@ -44,6 +44,7 @@ Chades_hbt_master::Chades_hbt_master(string parsfilename_prefix_set){
 	else{
 		CLog::Fatal("smearstring="+smearstring+" is not recognized\n");
 	}
+	Chades_hbt_acceptance::master=this;
 	randy=new Crandy(-12345);
 	acceptance->randy=randy;
 	
@@ -59,7 +60,6 @@ void Chades_hbt_master::CalcCFs(){
 		inxmin=1;
 	Chades_hbt_cell *cella,*cellb;
 	Chades_hbt_part *parta,*partb;
-	printf("calculating CFs\n");
 	for(icx=0;icx<cell_list->NRAPX;icx++){
 		printf("icx=%d out of NRAPX=%d\n",icx,cell_list->NRAPX);
 		for(icy=0;icy<cell_list->NRAPY;icy++){
