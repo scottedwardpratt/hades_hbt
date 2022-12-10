@@ -69,22 +69,22 @@ void Chades_hbt_master::ReadOSCAR_1997(){
 						
 						bool accept; double eff;
 						if(pdg == PIDA || pdg==PIDB){
-							//printf("m=%g, p=(%g,%g,%g,%g), r=(%g,%g,%g,%g)\n",mass,p0,px,py,pz,t,x,y,z);
-							
-							/* For testing
-							double Rg=2.7,pdotr,psquared,gamma;
-							x=Rg*randy->ran_gauss();
-							y=Rg*randy->ran_gauss();
-							z=Rg*randy->ran_gauss();
-							t=0.0;
-							psquared=px*px+py*py+pz*pz;
-							pdotr=px*x+py*y+pz*z;
-							p0=sqrt(psquared+mass*mass);
-							gamma=p0/mass;
-							x=x-px*pdotr*(1.0-1.0/gamma)/psquared;
-							y=y-py*pdotr*(1.0-1.0/gamma)/psquared;
-							z=z-pz*pdotr*(1.0-1.0/gamma)/psquared;
-							*/		
+							if(HADES_GAUSS){
+								//printf("m=%g, p=(%g,%g,%g,%g), r=(%g,%g,%g,%g)\n",mass,p0,px,py,pz,t,x,y,z);
+	
+								double pdotr,psquared,gamma;
+								x=HADES_GAUSS_Rx*randy->ran_gauss();
+								y=HADES_GAUSS_Ry*randy->ran_gauss();
+								z=HADES_GAUSS_Rz*randy->ran_gauss();
+								t=0.0;
+								psquared=px*px+py*py+pz*pz;
+								pdotr=px*x+py*y+pz*z;
+								p0=sqrt(psquared+mass*mass);
+								gamma=p0/mass;
+								x=x-px*pdotr*(1.0-1.0/gamma)/psquared;
+								y=y-py*pdotr*(1.0-1.0/gamma)/psquared;
+								z=z-pz*pdotr*(1.0-1.0/gamma)/psquared;
+							}
 							
 							
 							tmp_particle->p[1]=px;

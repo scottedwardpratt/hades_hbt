@@ -11,6 +11,11 @@ Chades_hbt_master::Chades_hbt_master(string parsfilename_prefix_set){
 	PIDA=parmap.getI("PIDA",211);
 	PIDB=parmap.getI("PIDB",211);
 	HADES_GAUSS=parmap.getB("HADES_GAUSS",false);
+	if(HADES_GAUSS){
+		HADES_GAUSS_Rx=parmap.getD("HADES_GAUSS_RX",2.7);
+		HADES_GAUSS_Ry=parmap.getD("HADES_GAUSS_RY",2.7);
+		HADES_GAUSS_Rz=parmap.getD("HADES_GAUSS_RZ",2.7);
+	}
 	if(PIDA==PIDB){
 		parmap.set("XYZSYM",true);
 	}	
@@ -111,9 +116,9 @@ void Chades_hbt_master::CalcCFs(){
 }
 
 void Chades_hbt_master::CalcCFs_Gaussian(){
-	double Rx=parmap.getD("HADES_RX",3.0);
-	double Ry=parmap.getD("HADES_RY",3.0);
-	double Rz=parmap.getD("HADES_RZ",3.0);
+	double Rx=parmap.getD("HADES_GAUSS_RX",3.0);
+	double Ry=parmap.getD("HADES_GAUSS_RY",3.0);
+	double Rz=parmap.getD("HADES_GAUSS_RZ",3.0);
 	double x,y,z,qx,qy,qz,q,r,ctheta,weight,root2=sqrt(2.0);
 	int imc,NMC=parmap.getI("NMC_GAUSSIAN",1000);
 	int iq,iqx,iqy,iqz,isx,isy,isz,nsx=2,nsy=2,nsz=2;
@@ -169,15 +174,14 @@ void Chades_hbt_master::CalcCFs_Gaussian(){
 }
 
 void Chades_hbt_master::IncrementCFs(Chades_hbt_part *parta,Chades_hbt_part *partb){
-	double q,r,ctheta,weight=1.0;
+	double qinv,r,ctheta,weight=1.0;
 	int iq;
-	wf->getqrctheta(parta->p,parta->x,partb->p,partb->x,q,r,ctheta);
-	
+	wf->getqrctheta(parta->p,parta->x,partb->p,partb->x,qinv,r,ctheta);
 	if(r>1.0E-8){
-		if(q<cell_list->QMAX){
+		if(qinv<cell_list->QMAX){
 			nsuccess+=1;		
-			if(q<cfs->DQINV*cfs->NQINV){
-				weight=wf->GetPsiSquared(q,r,ctheta);
+			if(qinv<cfs->DQINV*cfs->NQINV){
+				weight=wf->GetPsiSquared(qinv,r,ctheta);
 				if(weight!=weight){
 					parta->Print();
 					partb->Print();
@@ -188,12 +192,12 @@ void Chades_hbt_master::IncrementCFs(Chades_hbt_part *parta,Chades_hbt_part *par
 	}
 	
 	double qout,qlong,qside,deleta,dely,delphi;
-	Misc::outsidelong(parta->psmear,partb->psmear,q,qout,qside,qlong,deleta,dely,delphi);
+	Misc::outsidelong(parta->psmear,partb->psmear,qinv,qout,qside,qlong,deleta,dely,delphi);
 	if(fabs(qout)<cfs->Q3DMAX && fabs(qside)<cfs->Q3DMAX && fabs(qlong)<cfs->Q3DMAX){
 		cfs->threed_num->IncrementElement(qout,qlong,qside,weight);
 		cfs->threed_den->IncrementElement(qout,qlong,qside,1.0);
 	}
-	iq=lrint(floor(q/cfs->DQINV));
+	iq=lrint(floor(qinv/cfs->DQINV));
 	if(iq<int(cfs->C_of_qinv.size())){
 		cfs->C_of_qinv[iq]+=weight;
 		cfs->denom_of_qinv[iq]+=1;

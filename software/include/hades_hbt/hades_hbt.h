@@ -23,6 +23,7 @@ public:
 	Chades_hbt_master(string parmapfilename_prefix);
 	int PIDA,PIDB;
 	bool HADES_GAUSS;
+	double HADES_GAUSS_Rx,HADES_GAUSS_Ry,HADES_GAUSS_Rz;
 	CparameterMap parmap;
 	void ReadOSCAR_1997();
 	void ReadOSCAR_2003();

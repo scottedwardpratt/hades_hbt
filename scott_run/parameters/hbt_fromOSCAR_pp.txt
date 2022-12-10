@@ -7,7 +7,7 @@ int HADES_NQINV 80
 #
 string CORALPARS_FILENAME parameters/coralpars_pp.txt
 #
-string OSCAR_FILENAME_FILENAMES oscarfilenames_URQMD.txt
+string OSCAR_FILENAME_FILENAMES oscarfilenames_URQMD_central_cmf.txt
 int OSCAR_NFILESMAX 100
 #string OSCAR_FILENAME_FILENAMES oscarfilenames_SMASH.txt
 double OSCAR_BMIN 3.75
