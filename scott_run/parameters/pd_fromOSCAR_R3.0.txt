@@ -1,0 +1,22 @@
+int NMC	100000
+#
+double HADES_DELQ3D 4.0
+int HADES_NQ3DARRAY 40
+double HADES_DELQINV 1.0;
+int HADES_NQINV 160
+#
+double HADES_BEAM_ENERGY 1.58
+#
+string CORALPARS_FILENAME parameters/coralpars_pd.txt
+#
+double HADES_GAUSS_RX 3.0
+double HADES_GAUSS_RY 3.0
+double HADES_GAUSS_RZ 3.0
+#
+bool LOG_FILENAME INTERACTIVE
+#bool LOG_FILENAME hbt_fromOSCAR_output.txt
+#
+#string HADES_HBT_SMEARSTRING smear
+string HADES_HBT_SMEARSTRING nosmear
+#
+bool HADES_GAUSS true
