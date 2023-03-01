@@ -9,7 +9,7 @@ double HADES_BEAM_ENERGY 1.58
 #
 string CORALPARS_FILENAME parameters/coralpars_pp.txt
 string OSCAR_FILENAME_FILENAMES oscarfilenames_URQMD_cent10_30.txt
-string OSCAR_NFILESMAX 200
+string OSCAR_NFILESMAX 50
 #
 double HADES_GAUSS_RX 3.0
 double HADES_GAUSS_RY 3.0
@@ -18,7 +18,7 @@ double HADES_GAUSS_RZ 3.0
 bool LOG_FILENAME INTERACTIVE
 #bool LOG_FILENAME hbt_fromOSCAR_output.txt
 #
-#string HADES_HBT_SMEARSTRING smear
-string HADES_HBT_SMEARSTRING nosmear
+string HADES_HBT_SMEARSTRING smear
+#string HADES_HBT_SMEARSTRING nosmear
 #
 bool HADES_GAUSS true
