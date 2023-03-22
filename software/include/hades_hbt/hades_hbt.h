@@ -37,7 +37,7 @@ public:
 	Chades_hbt_CFs *cfs;
 	int nincrement,nsuccess;
 	Crandy *randy;
-	char message[200];
+	char message[CLog::CHARLENGTH];
 };
 
 class Chades_hbt_cell_list{
@@ -51,7 +51,7 @@ public:
 	void FindCell(Chades_hbt_part *part,Chades_hbt_cell *&cell);
 	void Add2List(Chades_hbt_part &parta);
 	static Chades_hbt_master *master;
-	char message[200];
+	char message[CLog::CHARLENGTH];
 };
 
 class Chades_hbt_cell{
@@ -87,7 +87,7 @@ public:
 	int NQ3D;
 	static Chades_hbt_master *master;
 	
-	char message[200];
+	char message[CLog::CHARLENGTH];
 };
 
 class Chades_hbt_part{
@@ -113,7 +113,7 @@ public:
 		p[0]=sqrt(mass*mass+p[1]*p[1]+p[2]*p[2]+p[3]*p[3]);
 		psmear[0]=sqrt(mass*mass+psmear[1]*psmear[1]+psmear[2]*psmear[2]+psmear[3]*psmear[3]);
 	}
-	char message[200];
+	char message[CLog::CHARLENGTH];
 };
 
 #endif

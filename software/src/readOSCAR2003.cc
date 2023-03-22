@@ -110,7 +110,7 @@ void Chades_hbt_master::ReadOSCAR_2003(){
 			for(int i = 0; i < 6; i++) f_in >> dust;
 			f_in >> bim;
 			if(bim<BMIN || bim>BMAX){
-				snprintf(message,sizeof(message),"bim=%g, but BMIN=%g and BMAX=%g\n",bim,BMIN,BMAX);
+				snprintf(message,CLog::CHARLENGTH,"bim=%g, but BMIN=%g and BMAX=%g\n",bim,BMIN,BMAX);
 				CLog::Info(message);
 			}
 			for(int i = 0; i < 2; i++) f_in >> dust;

@@ -22,7 +22,7 @@ public:
 	virtual void Smear(Chades_hbt_part *part){
 		// ^this is a dummy function
 	}
-	char message[300];
+	char message[CLog::CHARLENGTH];
 	static Chades_hbt_master *master;
 };
 
