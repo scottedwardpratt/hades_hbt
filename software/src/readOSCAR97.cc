@@ -86,7 +86,7 @@ void Chades_hbt_master::ReadOSCAR_1997(){
 								z=z-pz*pdotr*(1.0-1.0/gamma)/psquared;
 							}
 							
-							
+							tmp_particle->p[0]=p0;
 							tmp_particle->p[1]=px;
 							tmp_particle->p[2]=py;
 							tmp_particle->p[3]=pz;

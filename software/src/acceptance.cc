@@ -63,11 +63,13 @@ bool Chades_hbt_acceptance::Acceptance(int pid, Chades_hbt_part *part, double &e
 void Chades_hbt_acceptance_smear::Smear(Chades_hbt_part *part){
 	double sigmap1,sigmap2,sigmap3;
 	FourVector plab;
+	part->Setp0();
 	Misc::Boost(ucm,part->p,plab);
 	
 	sigmap1=10.0+fabs(plab[1]*0.02);
 	sigmap2=10.0+fabs(plab[2]*0.02);
 	sigmap3=10.0+fabs(plab[3]*0.02);
+	
 	plab[1]=plab[1]+sigmap1*randy->ran_gauss();
 	plab[2]=plab[2]+sigmap2*randy->ran_gauss();
 	plab[3]=plab[3]+sigmap3*randy->ran_gauss();

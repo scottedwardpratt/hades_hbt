@@ -18,7 +18,7 @@ double HADES_GAUSS_RZ 3.0
 bool LOG_FILENAME INTERACTIVE
 #bool LOG_FILENAME hbt_fromOSCAR_output.txt
 #
-string HADES_HBT_SMEARSTRING smear
-#string HADES_HBT_SMEARSTRING nosmear
+#string HADES_HBT_SMEARSTRING smear
+string HADES_HBT_SMEARSTRING nosmear
 #
 bool HADES_GAUSS true

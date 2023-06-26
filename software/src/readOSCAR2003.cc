@@ -7,6 +7,7 @@
 using namespace std;
 
 void Chades_hbt_master::ReadOSCAR_2003(){
+	printf("howdy 2003\n");
 	int nr_ev=1;
 	Chades_hbt_cell *cell;
 	Chades_hbt_part *tmp_particle=new Chades_hbt_part();
