@@ -7,6 +7,9 @@ class Chades_hbt_master;
 
 class Chades_hbt_acceptance{
 public:
+	double pTmax,pTmin,thetamin,thetamax,ymax,ymin;
+	char message[CLog::CHARLENGTH];
+	static Chades_hbt_master *master;
 	CparameterMap *parmap;
 	Crandy *randy;
 	FourVector ucm;
@@ -14,16 +17,29 @@ public:
 		//
 	}
 	void Init(CparameterMap *parmap);
+	
 	Chades_hbt_acceptance(CparameterMap *parmap){
 		Init(parmap);
 	}
-	bool Acceptance(int pid,Chades_hbt_part *part,double &efficiency);
-	double pTmax,pTmin,thetamin,thetamax,ymax,ymin;
-	virtual void Smear(Chades_hbt_part *part){
-		// ^this is a dummy function
+	
+	virtual bool OneParticleAcceptance(int pid,Chades_hbt_part *part,double &efficiency){
+		// this is a dummy function
+		return true;
 	}
-	char message[CLog::CHARLENGTH];
-	static Chades_hbt_master *master;
+	
+	virtual bool TwoParticleAcceptance(Chades_hbt_part *parta,Chades_hbt_part *partb,
+	double qout,double qlong,double qside,double deleta,doubl edely,double delphi,
+	double &efficiency){
+		// this is a dummy function
+		return true;
+	}
+	
+	
+	virtual void Smear(Chades_hbt_part *part){
+		// this is a dummy function
+	}
+	
+	
 };
 
 class Chades_hbt_acceptance_nosmear : public Chades_hbt_acceptance{

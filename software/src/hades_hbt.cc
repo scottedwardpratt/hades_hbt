@@ -174,33 +174,38 @@ void Chades_hbt_master::CalcCFs_Gaussian(){
 }
 
 void Chades_hbt_master::IncrementCFs(Chades_hbt_part *parta,Chades_hbt_part *partb){
-	double qinv,r,ctheta,weight=1.0;
+	double qinv,r,ctheta,efficiency,weight=1.0;
 	int iq;
-	wf->getqrctheta(parta->p,parta->x,partb->p,partb->x,qinv,r,ctheta);
-	if(r>1.0E-8){
-		if(qinv<cell_list->QMAX){
-			nsuccess+=1;		
-			if(qinv<cfs->DQINV*cfs->NQINV){
-				weight=wf->GetPsiSquared(qinv,r,ctheta);
-				if(weight!=weight){
-					parta->Print();
-					partb->Print();
-					CLog::Fatal("weight=Nan\n");
-				}
-			}
-		}
-	}
 	
 	double qout,qlong,qside,deleta,dely,delphi;
 	Misc::outsidelong(parta->psmear,partb->psmear,qinv,qout,qside,qlong,deleta,dely,delphi);
-	if(fabs(qout)<cfs->Q3DMAX && fabs(qside)<cfs->Q3DMAX && fabs(qlong)<cfs->Q3DMAX){
-		cfs->threed_num->IncrementElement(qout,qlong,qside,weight);
-		cfs->threed_den->IncrementElement(qout,qlong,qside,1.0);
-	}
-	iq=lrint(floor(qinv/cfs->DQINV));
-	if(iq<int(cfs->C_of_qinv.size())){
-		cfs->C_of_qinv[iq]+=weight;
-		cfs->denom_of_qinv[iq]+=1;
+	
+	if(acceptance->TwoParticleAcceptance(parta,partb,qinv,qout,qside,qlong,deleta,dely,delphi,efficiency)){
+		
+		wf->getqrctheta(parta->p,parta->x,partb->p,partb->x,qinv,r,ctheta);
+		if(r>1.0E-8){
+			if(qinv<cell_list->QMAX){
+				nsuccess+=1;		
+				if(qinv<cfs->DQINV*cfs->NQINV){
+					weight=wf->GetPsiSquared(qinv,r,ctheta);
+					if(weight!=weight){
+						parta->Print();
+						partb->Print();
+						CLog::Fatal("weight=Nan\n");
+					}
+				}
+			}
+		}
+	
+		if(fabs(qout)<cfs->Q3DMAX && fabs(qside)<cfs->Q3DMAX && fabs(qlong)<cfs->Q3DMAX){
+			cfs->threed_num->IncrementElement(qout,qlong,qside,weight*efficiency);
+			cfs->threed_den->IncrementElement(qout,qlong,qside,efficiency);
+		}
+		iq=lrint(floor(qinv/cfs->DQINV));
+		if(iq<int(cfs->C_of_qinv.size())){
+			cfs->C_of_qinv[iq]+=weight*efficiency;
+			cfs->denom_of_qinv[iq]+=efficiency;
+		}
 	}
 	
 }

@@ -98,7 +98,7 @@ void Chades_hbt_master::ReadOSCAR_1997(){
 							tmp_particle->x[3]=z;//-(pz/p0)*(t-taucompare);
 							tmp_particle->x[0]=t;//taucompare;				
 							
-							accept=acceptance->Acceptance(pdg,tmp_particle, eff);
+							accept=acceptance->OneParticleAcceptance(pdg,tmp_particle, eff);
 							if(accept){
 								cell_list->FindCell(tmp_particle,cell);
 								if(cell!=NULL){
