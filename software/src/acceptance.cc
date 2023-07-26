@@ -68,7 +68,7 @@ void Chades_hbt_acceptance_nosmear::Smear(Chades_hbt_part *part){
 }
 
 bool Chades_hbt_acceptance_nosmear::TwoParticleAcceptance(Chades_hbt_part *parta,Chades_hbt_part *partb,
-double qout,double qlong,double qside,double deleta,double dely,double delphi,
+double qinv,double qout,double qlong,double qside,double deleta,double dely,double delphi,
 double &efficiency){
 //// === HADES acceptance === ////
 	bool acc=true;
@@ -136,7 +136,7 @@ void Chades_hbt_acceptance_smear::Smear(Chades_hbt_part *part){
 }
 
 bool Chades_hbt_acceptance_smear::TwoParticleAcceptance(Chades_hbt_part *parta,Chades_hbt_part *partb,
-double qout,double qlong,double qside,double deleta,double dely,double delphi,
+double qinv,double qout,double qlong,double qside,double deleta,double dely,double delphi,
 double &efficiency){
 //// === HADES acceptance === ////
 	bool acc=true;

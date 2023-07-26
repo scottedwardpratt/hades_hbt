@@ -28,7 +28,7 @@ public:
 	}
 	
 	virtual bool TwoParticleAcceptance(Chades_hbt_part *parta,Chades_hbt_part *partb,
-	double qout,double qlong,double qside,double deleta,doubl edely,double delphi,
+	double qinv,double qout,double qlong,double qside,double deleta,double dely,double delphi,
 	double &efficiency){
 		// this is a dummy function
 		return true;
@@ -47,6 +47,10 @@ public:
 	Chades_hbt_acceptance_nosmear(CparameterMap *parmap){
 		Init(parmap);
 	}
+	bool OneParticleAcceptance(int pid,Chades_hbt_part *part,double &efficiency);
+	bool TwoParticleAcceptance(Chades_hbt_part *parta,Chades_hbt_part *partb,
+	double qinv,double qout,double qlong,double qside,double deleta,double dely,double delphi,
+	double &efficiency);
 	void Smear(Chades_hbt_part *part);
 };
 
@@ -55,6 +59,10 @@ public:
 	Chades_hbt_acceptance_smear(CparameterMap *parmap){
 		Init(parmap);
 	}
+	bool OneParticleAcceptance(int pid,Chades_hbt_part *part,double &efficiency);
+	bool TwoParticleAcceptance(Chades_hbt_part *parta,Chades_hbt_part *partb,
+	double qinv,double qout,double qlong,double qside,double deleta,double dely,double delphi,
+	double &efficiency);
 	void Smear(Chades_hbt_part *part);
 };
 

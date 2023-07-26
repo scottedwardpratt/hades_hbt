@@ -8,7 +8,6 @@ using namespace std;
 
 void Chades_hbt_master::ReadOSCAR_2003(){
 	printf("howdy 2003\n");
-	int nr_ev=1;
 	Chades_hbt_cell *cell;
 	Chades_hbt_part *tmp_particle=new Chades_hbt_part();
 	string directory=parmap.getS("OSCAR_DIRNAME","oscar_files");
@@ -42,7 +41,6 @@ void Chades_hbt_master::ReadOSCAR_2003(){
 	
 	
 	
-	int event = 0;
 	for(fiter=oscar_filenames.begin();fiter!=oscar_filenames.end();++fiter){
 		string infile_name=*fiter;
 		// open input file
@@ -54,7 +52,6 @@ void Chades_hbt_master::ReadOSCAR_2003(){
 		for(int i = 0; i < 3; i++)
 			getline( f_in, line );
 		while (!f_in.eof()){
-			event = nr_ev;
 			for(int i = 0; i < 4; i++) f_in >> dust;
 			f_in >> nrParticlesInEvent;
 			for(int i = 0; i < nrParticlesInEvent; i++){//reading particles in event loop
@@ -115,7 +112,6 @@ void Chades_hbt_master::ReadOSCAR_2003(){
 				CLog::Info(message);
 			}
 			for(int i = 0; i < 2; i++) f_in >> dust;
-			event++;
 		}
 		CLog::Info("readOSCAR: read in "+to_string(nparts)+" parts\n");
 	}//end of loop over files
