@@ -177,10 +177,10 @@ void Chades_hbt_master::IncrementCFs(Chades_hbt_part *parta,Chades_hbt_part *par
 	double qinv,r,ctheta,efficiency,weight=1.0;
 	int iq;
 	
-	double qout,qlong,qside,deleta,dely,delphi;
+	double qout,qlong,qside,deleta,dely,delphi,qinv_smeared;
 	Misc::outsidelong(parta->psmear,partb->psmear,qinv,qout,qside,qlong,deleta,dely,delphi);
 	
-	if(acceptance->TwoParticleAcceptance(parta,partb,qinv,qout,qside,qlong,deleta,dely,delphi,efficiency)){
+	if(acceptance->TwoParticleAcceptance(parta,partb,qinv_smeared,qout,qside,qlong,deleta,dely,delphi,efficiency)){
 		
 		wf->getqrctheta(parta->p,parta->x,partb->p,partb->x,qinv,r,ctheta);
 		if(r>1.0E-8){
@@ -201,7 +201,7 @@ void Chades_hbt_master::IncrementCFs(Chades_hbt_part *parta,Chades_hbt_part *par
 			cfs->threed_num->IncrementElement(qout,qlong,qside,weight*efficiency);
 			cfs->threed_den->IncrementElement(qout,qlong,qside,efficiency);
 		}
-		iq=lrint(floor(qinv/cfs->DQINV));
+		iq=lrint(floor(qinv_smeared/cfs->DQINV));
 		if(iq<int(cfs->C_of_qinv.size())){
 			cfs->C_of_qinv[iq]+=weight*efficiency;
 			cfs->denom_of_qinv[iq]+=efficiency;
