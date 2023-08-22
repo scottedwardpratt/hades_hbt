@@ -44,6 +44,9 @@ Chades_hbt_master::Chades_hbt_master(string parsfilename_prefix_set){
 	if(smearstring=="smear"){
 		acceptance=new Chades_hbt_acceptance_smear(&parmap);
 	}
+	else if(smearstring=="smear_maria"){
+		acceptance=new Chades_hbt_acceptance_smear_maria(&parmap);
+	}
 	else if(smearstring=="nosmear"){
 		acceptance=new Chades_hbt_acceptance_nosmear(&parmap);
 	}
@@ -67,7 +70,7 @@ void Chades_hbt_master::CalcCFs(){
 	Chades_hbt_cell *cella,*cellb;
 	Chades_hbt_part *parta,*partb;
 	for(icx=0;icx<cell_list->NRAPX;icx++){
-		printf("icx=%d out of NRAPX=%d\n",icx,cell_list->NRAPX);
+		CLog::Info("icx="+to_string(icx)+" out of NRAPX="+to_string(cell_list->NRAPX)+"\n");
 		for(icy=0;icy<cell_list->NRAPY;icy++){
 			for(icz=0;icz<cell_list->NRAPZ;icz++){
 				cella=cell_list->cell[icx][icy][icz];
@@ -178,15 +181,15 @@ void Chades_hbt_master::IncrementCFs(Chades_hbt_part *parta,Chades_hbt_part *par
 	int iq;
 	
 	double qout,qlong,qside,deleta,dely,delphi,qinv_smeared;
-	Misc::outsidelong(parta->psmear,partb->psmear,qinv,qout,qside,qlong,deleta,dely,delphi);
+	Misc::outsidelong(parta->psmear,partb->psmear,qinv_smeared,qout,qside,qlong,deleta,dely,delphi);
 	
 	if(acceptance->TwoParticleAcceptance(parta,partb,qinv_smeared,qout,qside,qlong,deleta,dely,delphi,efficiency)){
 		
 		wf->getqrctheta(parta->p,parta->x,partb->p,partb->x,qinv,r,ctheta);
 		if(r>1.0E-8){
-			if(qinv<cell_list->QMAX){
-				nsuccess+=1;		
-				if(qinv<cfs->DQINV*cfs->NQINV){
+			if(qinv_smeared<cell_list->QMAX){
+				nsuccess+=1;
+				if(qinv_smeared<cfs->DQINV*cfs->NQINV){
 					weight=wf->GetPsiSquared(qinv,r,ctheta);
 					if(weight!=weight){
 						parta->Print();

@@ -10,7 +10,7 @@ using namespace std;
 void Chades_hbt_master::ReadOSCAR_1997(){
 	Chades_hbt_cell *cell;
 	Chades_hbt_part *tmp_particle=new Chades_hbt_part();
-	//double taucompare=parmap.getD("OSCAR_TAUCOMPRE",25.0);
+	double taucompare=parmap.getD("OSCAR_TAUCOMPRE",25.0);
 	string filenamefilenames=parmap.getS("OSCAR_FILENAME_FILENAMES","oscarfilenames_URQMD.txt");
 	double BMIN=parmap.getD("OSCAR_BMIN",4.0);
 	double BMAX=parmap.getD("OSCAR_BMAX",4.6);
@@ -24,12 +24,12 @@ void Chades_hbt_master::ReadOSCAR_1997(){
 	int nrParticlesInEvent,tracknumber=0;
 	int nr_event;
 	int ifile=0,nfilesmax;
-	nfilesmax=parmap.getI("OSCAR_NFILESMAX",999999);
+	nfilesmax=parmap.getI("OSCAR_NFILESMAX",99999);
 
 	list<string> oscar_filenames;
 	list<string>::iterator fiter;
 	string filename;
-	char dummy[200];
+	char dummy[800];
 	FILE  *fptr_filenames=fopen(filenamefilenames.c_str(),"r");
 	do{
 		fscanf(fptr_filenames,"%s",dummy);
@@ -38,34 +38,34 @@ void Chades_hbt_master::ReadOSCAR_1997(){
 		ifile+=1;
 	}while(!feof(fptr_filenames) && ifile<nfilesmax);
 	fclose(fptr_filenames);
-
+	
 	for(fiter=oscar_filenames.begin();fiter!=oscar_filenames.end();++fiter){
 		filename=*fiter;
 		CLog::Info("Reading "+filename+"\n");
 		fptr_in=fopen(filename.c_str(),"r");
 		//getting rid of some lines
 		for(int i = 0; i < 3; i++){
-			fgets(dummy,200,fptr_in);
+			fgets(dummy,800,fptr_in);
+			//printf("%s\n",dummy);
 		}
 		do{
 			fscanf(fptr_in,"%d %d %lf %lf",&nr_event,&nrParticlesInEvent,&bim,&dumbo);
-			fgets(dummy,200,fptr_in);
+			//printf("nr_event=%d, nrParticlesInEvent=%d, bim=%g, dumbo=%g\n",nr_event,nrParticlesInEvent,bim,dumbo);
+			fgets(dummy,800,fptr_in);
+			//printf("will try to read %d particles from this event\n",nrParticlesInEvent);
 			if(!feof(fptr_in)){
 				for(int i = 1; i <= nrParticlesInEvent; i++){//reading particles in event loop
 					fscanf(fptr_in,"%d %d  %lf %lf %lf %lf  %lf  %lf %lf %lf %lf",&tracknumber,&pid,&px,&py,&pz,&p0,&mass,&x,&y,&z,&t);
-					fgets(dummy,200,fptr_in);
+					fgets(dummy,800,fptr_in);
 					if(i!=tracknumber){
 						CLog::Info("Warning for file "+filename+", tracknumber suspicious\n");
-						CLog::Info("nr_event="+to_string(nr_event)+",tracknumber="+to_string(tracknumber)+"\n");
-						Misc::Pause();
+						CLog::Info("nr_event="+to_string(nr_event)+",tracknumber="+to_string(tracknumber)+", i="+to_string(i)+"\n");
+						exit(1);
 					}
 					if(bim>=BMIN && bim<=BMAX){
 						mass*=1000.0; p0*=1000.0; px*=1000.0; py*=1000.0; pz*=1000.0;
 						p0=sqrt(mass*mass+px*px+py*py+pz*pz);
 						pdg = pid;
-						
-	
-						
 						
 						bool accept; double eff;
 						if(pdg == PIDA || pdg==PIDB){
@@ -93,10 +93,10 @@ void Chades_hbt_master::ReadOSCAR_1997(){
 							tmp_particle->pid=pdg;
 							acceptance->Smear(tmp_particle);
 							tmp_particle->Setp0();
-							tmp_particle->x[1]=x;//-(px/p0)*(t-taucompare);
-							tmp_particle->x[2]=y;//-(py/p0)*(t-taucompare);
-							tmp_particle->x[3]=z;//-(pz/p0)*(t-taucompare);
-							tmp_particle->x[0]=t;//taucompare;				
+							tmp_particle->x[1]=x-(px/p0)*(t-taucompare);
+							tmp_particle->x[2]=y-(py/p0)*(t-taucompare);
+							tmp_particle->x[3]=z-(pz/p0)*(t-taucompare);
+							tmp_particle->x[0]=taucompare;				
 							
 							accept=acceptance->OneParticleAcceptance(pdg,tmp_particle, eff);
 							if(accept){

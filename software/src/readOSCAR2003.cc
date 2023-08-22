@@ -7,7 +7,6 @@
 using namespace std;
 
 void Chades_hbt_master::ReadOSCAR_2003(){
-	printf("howdy 2003\n");
 	Chades_hbt_cell *cell;
 	Chades_hbt_part *tmp_particle=new Chades_hbt_part();
 	string directory=parmap.getS("OSCAR_DIRNAME","oscar_files");
@@ -16,7 +15,6 @@ void Chades_hbt_master::ReadOSCAR_2003(){
 
 	double BMIN=parmap.getD("OSCAR_BMIN",-0.1);
 	double BMAX=parmap.getD("OSCAR_BMAX",100.0);
-	
 	
 	// opening the files from first -> last:
 	ifstream f_in;
@@ -34,7 +32,6 @@ void Chades_hbt_master::ReadOSCAR_2003(){
 	do{
 		fscanf(fptr_filenames,"%s",dummy);
 		filename=dummy;
-		printf("filename=%s\n",dummy);
 		oscar_filenames.push_back(filename);
 	}while(!feof(fptr_filenames));
 	fclose(fptr_filenames);

@@ -66,4 +66,16 @@ public:
 	void Smear(Chades_hbt_part *part);
 };
 
+class Chades_hbt_acceptance_smear_maria : public Chades_hbt_acceptance{
+public:
+	Chades_hbt_acceptance_smear_maria(CparameterMap *parmap){
+		Init(parmap);
+	}
+	bool OneParticleAcceptance(int pid,Chades_hbt_part *part,double &efficiency);
+	bool TwoParticleAcceptance(Chades_hbt_part *parta,Chades_hbt_part *partb,
+	double qinv,double qout,double qlong,double qside,double deleta,double dely,double delphi,
+	double &efficiency);
+	void Smear(Chades_hbt_part *part);
+};
+
 #endif

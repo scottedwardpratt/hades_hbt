@@ -1,8 +1,8 @@
 int PIDA 2212
 int PIDB 2212
-int NQMAX 160
-double DQINV 1.0
-double DELQ 1.0
+int NQMAX 80
+double DQINV 2.0
+double DELQ 2.0
 double EPSILON 0.5
 int KLMAX 6
 bool IDENTICAL false
