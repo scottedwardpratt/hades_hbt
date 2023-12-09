@@ -6,8 +6,7 @@ add_custom_target(extern_msu_commonutils COMMAND make WORKING_DIRECTORY ${GITHOM
 add_custom_target(extern_msu_coral COMMAND make WORKING_DIRECTORY ${GITHOME_MSU}/coral/software)
 add_custom_target(extern_hades_hbt COMMAND make WORKING_DIRECTORY ${GITHOME_MSU}/hades_hbt/software)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native -O3")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W -Wall -Wmissing-declarations -std=c++11")
+set(CMAKE_CXX_FLAGS "-W -Wall -march=native -std=c++17 -O2")
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 find_package(GSL REQUIRED)

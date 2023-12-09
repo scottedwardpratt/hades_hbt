@@ -6,7 +6,6 @@ double EPSILON 0.5
 int KLMAX 6
 double DELR 0.5
 int NRMAX 150
-bool IDENTICAL true
 int KLMAX 6
 double DELR 0.1
 int NRMAX 150

@@ -6,6 +6,7 @@
 #include <list>
 
 using namespace std;
+using namespace NMSUPratt;
 
 void Chades_hbt_master::ReadOSCAR_1997(){
 	Chades_hbt_cell *cell;

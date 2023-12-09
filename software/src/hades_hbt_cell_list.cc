@@ -2,6 +2,7 @@
 Chades_hbt_master *Chades_hbt_cell_list::master=NULL;
 
 using namespace std;
+using namespace NMSUPratt;
 
 Chades_hbt_cell_list::Chades_hbt_cell_list(CparameterMap *parmap){
 	int ix,iy,iz;

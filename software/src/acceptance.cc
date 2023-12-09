@@ -1,5 +1,6 @@
 #include "hades_hbt/hades_hbt.h"
 using namespace std;
+using namespace NMSUPratt;
 
 Chades_hbt_master *Chades_hbt_acceptance::master=NULL;
 

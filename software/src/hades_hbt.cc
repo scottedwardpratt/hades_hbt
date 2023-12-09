@@ -1,12 +1,13 @@
 #include "hades_hbt/hades_hbt.h"
+using namespace NMSUPratt;
 
 Chades_hbt_master::Chades_hbt_master(string parsfilename_prefix_set){
 	parsfilename_prefix=parsfilename_prefix_set;
 	string parsfilename="parameters/"+parsfilename_prefix+".txt";
 	parmap.ReadParsFromFile(parsfilename);
 	string logfilename=parmap.getS("LOG_FILENAME","log.txt");
-	string coralpars_filename=parmap.getS("CORALPARS_FILENAME","parameters/coralpars.txt");
-	parmap.ReadParsFromFile(coralpars_filename);
+	//string coralpars_filename=parmap.getS("CORALPARS_FILENAME","parameters/coralpars.txt");
+	//parmap.ReadParsFromFile(coralpars_filename);
 	CLog::Init(logfilename);
 	PIDA=parmap.getI("PIDA",211);
 	PIDB=parmap.getI("PIDB",211);
@@ -21,13 +22,13 @@ Chades_hbt_master::Chades_hbt_master(string parsfilename_prefix_set){
 	}	
 	
 	if((PIDA==2212 && PIDB==2212) || (PIDA==-2212 && PIDB==-2212)){
-		wf=new CWaveFunction_pp_schrod(coralpars_filename);
+		wf=new CWaveFunction_pp_schrod(parsfilename);
 	}
 	else if((PIDA==211 && PIDB==211) || (PIDA==-211 && PIDB==-211)){
-		wf=new CWaveFunction_pipluspiplus_sqwell(coralpars_filename);
+		wf=new CWaveFunction_pipluspiplus_sqwell(parsfilename);
 	}
 	else if((abs(PIDA)==2212 && fabs(PIDB)==22122112)){
-		wf=new CWaveFunction_pd_sqwell(coralpars_filename);
+		wf=new CWaveFunction_pd_sqwell(parsfilename);
 	}
 	else{
 		CLog::Fatal("Cannot recognize PIDA="+to_string(PIDA)+" or PIDB="+to_string(PIDB)+"\n");
@@ -56,7 +57,7 @@ Chades_hbt_master::Chades_hbt_master(string parsfilename_prefix_set){
 	
 	randy=new Crandy(-12345);
 	acceptance->randy=randy;
-	
+		
 }
 
 void Chades_hbt_master::CalcCFs(){

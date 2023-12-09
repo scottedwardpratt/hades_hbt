@@ -1,12 +1,20 @@
 int PIDA 2212
 int PIDB 22122112
-int NQMAX 100
-double DQINV 2.0
-double DELQ 2.0
+int HADES_NQINV 50
+double HADES_DELQINV 4.0
+int HADES_NQ3DARRAY 100
+double HADES_DELQ3D 2.0
 double EPSILON 0.5
 int KLMAX 6
 bool IDENTICAL false
 double DELR 0.1
+double DQINV 2.0
+double DELQ 2.0
+int NQMAX 100
+double EPSILON 0.5
+double NQINV 100
 int NRMAX 200
 bool IDENTICAL true
 bool XYZSYM true
+string LOG_FILENAME INTERACTIVE
+

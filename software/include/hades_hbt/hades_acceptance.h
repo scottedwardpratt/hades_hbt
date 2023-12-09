@@ -1,6 +1,7 @@
 #ifndef __HADES_HBT_ACCEPTANCE_H__#ifndef __HADES_HBT_ACCEPTANCE_H__
 #define __HADES_HBT_ACCEPTANCE_H__
 #include "hades_hbt.h"
+using namespace NMSUPratt;
 
 class Chades_hbt_part;
 class Chades_hbt_master;

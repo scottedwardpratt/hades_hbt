@@ -5,6 +5,7 @@
 #include <cstdlib>
 
 using namespace std;
+using namespace NMSUPratt;
 
 void Chades_hbt_master::ReadOSCAR_2003(){
 	Chades_hbt_cell *cell;
